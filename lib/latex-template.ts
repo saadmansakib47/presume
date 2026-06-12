@@ -80,6 +80,11 @@ export function generateLatex(cvData: CVData): string {
     });
   }
 
+  // Achievements
+  if (cvData.enabledSections.achievements && cvData.achievements.length > 0) {
+    template += `\\section{ACHIEVEMENTS}\n\\begin{itemize}\n${cvData.achievements.map(a => `\\item ${escapeLaTeX(a)}`).join('\n')}\n\\end{itemize}\n\\vspace{2.0mm}\n`;
+  }
+
   template += `\\end{minipage}
 \\hfill
 \\begin{minipage}[t]{0.35\\textwidth}
@@ -93,6 +98,16 @@ export function generateLatex(cvData: CVData): string {
   // Education
   if (cvData.enabledSections.education && cvData.education.length > 0) {
     template += `\\section{EDUCATION}\n${generateEducationContent(cvData.education)}\n\\vspace{2.0mm}\n`;
+  }
+
+  // Languages
+  if (cvData.enabledSections.languages && cvData.languages.length > 0) {
+    template += `\\section{LANGUAGES}\n\\begin{itemize}\n${cvData.languages.map(lang => `\\item ${escapeLaTeX(lang)}`).join('\n')}\n\\end{itemize}\n\\vspace{2.0mm}\n`;
+  }
+
+  // Interests
+  if (cvData.enabledSections.interests && cvData.interests.length > 0) {
+    template += `\\section{INTERESTS}\n\\begin{itemize}\n${cvData.interests.map(int => `\\item ${escapeLaTeX(int)}`).join('\n')}\n\\end{itemize}\n\\vspace{2.0mm}\n`;
   }
 
   template += `\\end{minipage}
