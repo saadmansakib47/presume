@@ -1,0 +1,21 @@
+# Files to ignore for AI agent / Grok operations
+node_modules/
+.next/
+build/
+out/
+*.log
+*.pdf
+*.aux
+*.out
+.env*
+coverage/
+.DS_Store
+*.tsbuildinfo
+
+# Large or generated files
+public/generated/*
+temp-*.tex
+
+# Do not index these for context
+README.md  # optional
+package-lock.json
