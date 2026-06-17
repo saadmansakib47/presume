@@ -1,0 +1,225 @@
+%% Mahin Ibn Mahmud — CV  |  Two-column, one-page
+%% Compile: pdflatex MahinCV.tex  (run TWICE for TikZ/eso-pic)
+%% Requires: paracol, fontawesome5, lato, tikz, eso-pic
+
+\documentclass[10pt, a4paper]{article}
+
+% ── Packages ──────────────────────────────────────────────────────────────────
+\usepackage[a4paper, top=0pt, bottom=0pt, left=0pt, right=0pt]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fontawesome5}
+\usepackage{parskip}
+\usepackage{lato}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{paracol}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{eso-pic}
+
+% ── Colours ───────────────────────────────────────────────────────────────────
+\definecolor{topbg}{HTML}{1A3A5C}
+\definecolor{sidebg}{HTML}{EAEEF2}
+\definecolor{sidelabel}{HTML}{1A3A5C}
+\definecolor{sidetext}{HTML}{2B2B2B}
+\definecolor{accent}{HTML}{1A3A5C}
+\definecolor{rulecolor}{HTML}{AABBCC}
+\definecolor{body}{HTML}{2B2B2B}
+
+% ── Hyperref ──────────────────────────────────────────────────────────────────
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent}
+
+% ── List spacing ──────────────────────────────────────────────────────────────
+\setlist[itemize]{leftmargin=1.2em, itemsep=0pt, topsep=1pt, parsep=0pt}
+\setlist[enumerate]{leftmargin=1.4em, itemsep=1pt, topsep=1pt, parsep=0pt}
+\pagestyle{empty}
+\parskip=0pt
+\parindent=0pt
+
+% ── Key dimensions ─────────────────────────────────────────────────────────────
+\newlength{\sideW}
+\setlength{\sideW}{0.33\paperwidth}
+\newlength{\bannerH}
+\setlength{\bannerH}{2.6cm}
+\newlength{\innerSideW}         % usable text width inside sidebar
+\setlength{\innerSideW}{\dimexpr\sideW - 20pt\relax}
+\newlength{\innerMainW}         % usable text width inside right col
+\setlength{\innerMainW}{\dimexpr\paperwidth - \sideW - 24pt\relax}
+
+% ── Full-page backgrounds via eso-pic ─────────────────────────────────────────
+\AddToShipoutPictureBG{%
+  \AtPageLowerLeft{\color{sidebg}\rule{\sideW}{\paperheight}}%
+  \AtPageUpperLeft{\raisebox{-\bannerH}{\color{topbg}\rule{\paperwidth}{\bannerH}}}%
+}
+
+% ── Section headings ──────────────────────────────────────────────────────────
+% Right column — rule spans only its own column width
+\newcommand{\rsection}[1]{%
+  \vspace{7pt}%
+  {\large\bfseries\color{accent}#1}\\[-5pt]%
+  {\color{rulecolor}\rule{\innerMainW}{0.5pt}}%
+  \vspace{2pt}%
+}
+
+% Sidebar — rule spans only sidebar inner width
+\newcommand{\ssection}[1]{%
+  \vspace{7pt}%
+  {\small\bfseries\color{sidelabel}\MakeUppercase{#1}}\\[-4pt]%
+  {\color{sidelabel!40}\rule{\innerSideW}{0.4pt}}%
+  \vspace{3pt}%
+}
+
+% ── Entry (right col) ─────────────────────────────────────────────────────────
+\newcommand{\rentry}[3]{%
+  \noindent{\bfseries\small #1}\\[0pt]%
+  {\footnotesize\color{accent}\textit{#2}}%
+  \ifx&#3&\else\\[-1pt]{\footnotesize\color{body}#3}\fi%
+  \\[3pt]%
+}
+
+% ── Sidebar helpers ───────────────────────────────────────────────────────────
+\newcommand{\scontact}[2]{%
+  {\small\color{topbg}#1}\enspace{\small\color{sidetext}#2}\\[3pt]%
+}
+\newcommand{\stag}[1]{%
+  \colorbox{topbg!15}{\footnotesize\color{topbg}\strut\ #1\ }\,%
+}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+\color{body}
+
+% ── TOP BANNER — name & title ──────────────────────────────────────────────────
+\noindent
+\begin{minipage}[c][\bannerH][c]{\paperwidth}
+  \hspace{\dimexpr\sideW + 0.5cm\relax}%
+  \begin{minipage}[c]{\dimexpr\paperwidth - \sideW - 1.2cm\relax}
+    {\fontsize{22}{26}\bfseries\color{white} Mahin Ibn Mahmud}\\[4pt]
+    {\large\color{white!70} Public Health Professional}
+  \end{minipage}
+\end{minipage}
+
+% ── TWO-COLUMN BODY ───────────────────────────────────────────────────────────
+\columnratio{0.33}
+\begin{paracol}{2}
+
+% ══════════════════════════════
+%  LEFT SIDEBAR
+% ══════════════════════════════
+\begin{leftcolumn}
+\vspace{0pt}
+
+% Circular photo straddling banner / sidebar boundary
+\begin{center}
+  \vspace{-1.3cm}
+  \begin{tikzpicture}
+    \clip (0,0) circle (1.35cm);
+    \node at (0,0) {\includegraphics[width=2.7cm, height=2.7cm,
+                    keepaspectratio=false]{photo.png}};
+    \draw[white, line width=2.5pt] (0,0) circle (1.35cm);
+  \end{tikzpicture}
+\end{center}
+
+% All sidebar content inside a padded minipage
+\hspace{10pt}%
+\begin{minipage}{\innerSideW}
+
+\ssection{Contact}
+\scontact{\faPhone}{+880 15816 33525}
+\scontact{\faEnvelope}{\href{mailto:mahinmahmud64@gmail.com}{mahinmahmud64@gmail.com}}
+\scontact{\faLinkedin}{\href{https://linkedin.com/in/mahin-ibn-mahmud-5595a3416}{linkedin/mahin-ibn-mahmud}}
+\scontact{\faMapMarker*}{Mirpur-10, Dhaka}
+
+\ssection{Skills}
+{\small\bfseries\color{sidelabel}Software}\\[2pt]
+\stag{MS Word} \stag{MS Excel} \stag{SPSS}\\[5pt]
+{\small\bfseries\color{sidelabel}Soft Skills}\\[2pt]
+\stag{Critical Thinking}\\[2pt]
+\stag{Communication}\\[2pt]
+\stag{Leadership} \stag{Teamwork}
+
+\ssection{Languages}
+{\small\color{sidetext}%
+\textbf{Bengali} — Native\\[2pt]%
+\textbf{English} — Professional%
+}
+
+\ssection{Interests}
+{\small\color{sidetext}Teaching \textbullet\ Reading \textbullet\ Football}
+
+\end{minipage}
+\end{leftcolumn}
+
+% ══════════════════════════════
+%  RIGHT COLUMN
+% ══════════════════════════════
+\begin{rightcolumn}
+\vspace{5pt}
+\hspace{8pt}%
+\begin{minipage}{\innerMainW}
+
+\rsection{Profile}
+{\small Dedicated public health graduate (CGPA 3.89) with hands-on experience in community
+health advisory, research, and event leadership. Passionate about evidence-based health
+initiatives and effective cross-community communication.}
+
+\rsection{Education}
+\rentry{B.Sc. in Public Health}{Daffodil International University \textbullet\ Jul 2023 – Present}{CGPA: 3.89 / 4.00}
+\rentry{HSC — Science}{Dhaka Residential Model College \textbullet\ 2021}{GPA: 5.00 / 5.00}
+\rentry{SSC — Science}{Dhaka Residential Model College \textbullet\ 2019}{GPA: 5.00 / 5.00}
+
+\rsection{Work Experience}
+\rentry{Health Advisor}{Hope for Health Organization \textbullet\ Ongoing}{}
+\begin{itemize}\small
+  \item Guide 50+ students on health awareness and lifestyle practices.
+  \item Support community outreach strategy and programme planning.
+\end{itemize}
+\vspace{3pt}
+\rentry{Active Member — Public Health Club}{Daffodil International University \textbullet\ Ongoing}{}
+\begin{itemize}\small
+  \item Organise community awareness events and health campaigns.
+  \item Led event decoration for the DIU Public Health Fest.
+\end{itemize}
+
+\rsection{Research Projects}
+{\small
+\begin{enumerate}
+  \item \textit{Lifestyle Choices, Reproductive Health Knowledge, PCOS \& Self-Breast Examination among Undergraduates in Bangladesh: A Mixed Method Investigation.}
+  \item \textit{Personal Hygiene Knowledge \& Practices among School-Going Children in Bangladesh: A Cross-Sectional Study.}
+\end{enumerate}
+}
+
+\rsection{Achievements \& Volunteering}
+{\small
+\begin{itemize}
+  \item \textbf{Dean's Award} — Daffodil International University, Fall 2023
+  \item \textbf{Public Health Champions Award} — Fall 2024
+  \item \textbf{1\textsuperscript{st} Runners-Up} — World Diabetes Day Quiz, 2025
+  \item \textbf{Volunteer} — DRMC IT Fest 2021; Public Health Champions Award Day 2024
+\end{itemize}
+}
+
+\rsection{References}
+{\small
+\begin{minipage}[t]{0.47\innerMainW}
+  \textbf{Dr.\ Abm Alauddin Chowdhury}\\
+  Head, Dept.\ of Public Health, DIU\\
+  {\footnotesize\faPhone\ +880 13036 16913}\\
+  {\footnotesize\href{mailto:dralauddin@daffodilvarsity.edu.bd}{dralauddin@daffodilvarsity.edu.bd}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\innerMainW}
+  \textbf{Dr.\ Nadira Mehriban}\\
+  Asst.\ Professor, Public Health, DIU\\
+  {\footnotesize\faPhone\ +880 18170 94869}\\
+  {\footnotesize\href{mailto:drnadira@daffodilvarsity.edu.bd}{drnadira@daffodilvarsity.edu.bd}}
+\end{minipage}
+}
+
+\end{minipage}
+\end{rightcolumn}
+\end{paracol}
+
+\end{document}

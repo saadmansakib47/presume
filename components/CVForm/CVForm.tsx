@@ -15,7 +15,7 @@ export default function CVForm({ cvData, setCvData }: CVFormProps) {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold mb-6">Build Your CV</h2>
+        <h2 className="text-xl font-black tracking-tight mb-6 uppercase">Build Your Resume</h2>
         <PersonalInfoForm cvData={cvData} setCvData={setCvData} />
       </div>
 
