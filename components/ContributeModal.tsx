@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, FileText, Sparkles, UploadCloud, Info } from 'lucide-react';
+import { X, FileText, UploadCloud, Info } from 'lucide-react';
 
 interface Props {
   onClose: () => void;
@@ -105,7 +105,6 @@ ${latexContent}
         {/* Title */}
         <div className="space-y-1.5 mb-6">
           <h2 className="text-lg sm:text-xl font-black tracking-tight text-zinc-950 dark:text-white uppercase flex items-center gap-2">
-            <Sparkles size={20} className="text-zinc-600 dark:text-zinc-400" />
             Contribute a Template
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold tracking-wide">
@@ -159,17 +158,16 @@ ${latexContent}
             {/* LaTeX Upload */}
             <div className="space-y-1.5">
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-450 dark:text-zinc-500">LaTeX Template (.tex)</span>
-              
+
               <div
                 onDragEnter={handleDrag}
                 onDragOver={handleDrag}
                 onDragLeave={handleDrag}
                 onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition ${
-                  dragActive
-                    ? "border-zinc-950 dark:border-white bg-zinc-50 dark:bg-zinc-900"
-                    : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-650"
-                }`}
+                className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition ${dragActive
+                  ? "border-zinc-950 dark:border-white bg-zinc-50 dark:bg-zinc-900"
+                  : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-650"
+                  }`}
                 onClick={() => document.getElementById('latex-file-upload')?.click()}
               >
                 <input
