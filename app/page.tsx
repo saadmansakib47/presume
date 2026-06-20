@@ -12,6 +12,8 @@ import CvPreview from '@/components/CvPreview';
 import ClassicCV from '@/components/templates/ClassicCV';
 import ProgrammerCV from '@/components/templates/ProgrammerCV';
 import { generateLatex } from '@/lib/latex-template';
+import ContributeModal from '@/components/ContributeModal';
+import TemplateBrowserModal from '@/components/TemplateBrowserModal';
 import {
   ChevronLeft,
   FileText,
@@ -116,9 +118,11 @@ function useLIFOTypewriter(speed = 50, pauseMs = 1400, deleteSpeed = 30) {
 function TemplateModal({
   onSelect,
   onClose,
+  onBrowse,
 }: {
   onSelect: (type: 'programmer' | 'classic') => void;
   onClose: () => void;
+  onBrowse: () => void;
 }) {
   // Close on Escape
   useEffect(() => {
@@ -217,6 +221,21 @@ function TemplateModal({
             </div>
           </button>
         </div>
+
+        <div className="mt-6 pt-4 border-t border-zinc-150 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-xs text-zinc-450 font-semibold uppercase tracking-wider">
+            Looking for more configurations?
+          </p>
+          <button
+            onClick={() => {
+              onBrowse();
+              onClose();
+            }}
+            className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:text-white rounded-[10px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+          >
+            Browse Community Presets →
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -273,6 +292,8 @@ export default function PresumePage() {
   const typedMotto = useLIFOTypewriter(50, 1400, 28);
   const latexOutput = generateLatex(cvData);
   const [customLatex, setCustomLatex] = useState<string | null>(null);
+  const [showContribute, setShowContribute] = useState(false);
+  const [showBrowser, setShowBrowser] = useState(false);
 
   const [generatingPortfolio, setGeneratingPortfolio] = useState(false);
 
@@ -354,6 +375,19 @@ export default function PresumePage() {
         <TemplateModal
           onSelect={startBuilding}
           onClose={() => setShowModal(false)}
+          onBrowse={() => setShowBrowser(true)}
+        />
+      )}
+
+      {showContribute && <ContributeModal onClose={() => setShowContribute(false)} />}
+
+      {showBrowser && (
+        <TemplateBrowserModal
+          onSelect={(presetData) => {
+            setCvData(presetData);
+            setCustomLatex(null);
+          }}
+          onClose={() => setShowBrowser(false)}
         />
       )}
 
@@ -592,10 +626,16 @@ export default function PresumePage() {
         </main>
 
         {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-        <footer className="border-t border-zinc-200 bg-white py-5 text-center no-print">
+        <footer className="border-t border-zinc-200 bg-white py-5 text-center no-print flex flex-col sm:flex-row justify-between items-center px-6 max-w-7xl mx-auto w-full gap-3">
           <p className="text-[11px] text-zinc-400 font-semibold tracking-widest uppercase">
             Presume — Instant LaTeX Resumes. Free. Open Source. Minimalist.
           </p>
+          <button
+            onClick={() => setShowContribute(true)}
+            className="text-[11px] text-zinc-550 hover:text-zinc-900 font-bold tracking-widest uppercase transition cursor-pointer"
+          >
+            Contribute Template
+          </button>
         </footer>
       </div>
 

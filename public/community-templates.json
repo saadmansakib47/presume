@@ -1,0 +1,160 @@
+[
+  {
+    "id": "programmer-compact",
+    "name": "Minimalist Compact (Developer)",
+    "description": "A high-density variation of the programmer template designed to fit maximum technical history into a clean, single-page layout.",
+    "contributor": "alex_dev99",
+    "data": {
+      "template": "programmer",
+      "themeColor": "black",
+      "personalInfo": {
+        "firstName": "Alex",
+        "lastName": "Mercer",
+        "headline": "Senior Backend Architect",
+        "photo": "",
+        "address": "Seattle, WA",
+        "phone": "(+1) 206-555-0199",
+        "email": "alex.mercer@example.com",
+        "linkedin": "https://linkedin.com/in/alex-mercer",
+        "github": "https://github.com/alex-mercer",
+        "portfolio": "https://alex-mercer.dev",
+        "location": "Seattle, WA"
+      },
+      "summary": "Distributed systems engineer with 6+ years of experience designing fault-tolerant backend pipelines, streaming APIs, and Kubernetes infrastructure.",
+      "education": [
+        {
+          "degree": "M.Sc. in Computer Science",
+          "institution": "University of Washington",
+          "dates": "2018 — 2020",
+          "gpa": "3.95 / 4.00"
+        }
+      ],
+      "experience": [
+        {
+          "title": "Backend Architect",
+          "organization": "CloudScale Inc.",
+          "dates": "2021 — Present",
+          "description": [
+            "Architected a real-time event streaming pipeline processing 10B+ daily events using Go and Kafka.",
+            "Reduced AWS cloud compute expenditures by 28% through custom Kubernetes auto-scaling policies.",
+            "Led a team of 4 engineers to rebuild the main authentication gateway with zero downtime."
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "title": "HyperKV — Distributed Key-Value Store",
+          "dates": "2024",
+          "description": [
+            "Developed an LSM-tree backed distributed key-value store using Raft consensus in Rust.",
+            "Achieved 120k write operations/sec with sub-millisecond tail latencies."
+          ]
+        }
+      ],
+      "skills": [
+        { "category": "Languages", "skills": ["Go", "Rust", "C++", "Python", "SQL"] },
+        { "category": "Cloud & Infra", "skills": ["AWS", "Docker", "Kubernetes", "Kafka", "gRPC", "Linux"] }
+      ],
+      "achievements": [
+        "Speaker at GoCon Seattle 2023 — 'Scaling Consensus Protocols'",
+        "Main contributor to open-source Raft implementations"
+      ],
+      "languages": ["English (Native)", "German (Professional)"],
+      "interests": ["Distributed Databases", "Sailing", "Retro Gaming"],
+      "references": [],
+      "showPhoto": false,
+      "showGPA": true,
+      "enabledSections": {
+        "summary": true,
+        "experience": true,
+        "projects": true,
+        "skills": true,
+        "education": true,
+        "achievements": true,
+        "languages": true,
+        "interests": true,
+        "technicalWriting": false,
+        "problemSolving": false,
+        "references": false
+      }
+    }
+  },
+  {
+    "id": "classic-navy-professional",
+    "name": "Navy Executive",
+    "description": "A sophisticated executive layout using the classic structure with deep blue accents, centered headers, and a formal layout style.",
+    "contributor": "sarah_consults",
+    "data": {
+      "template": "classic",
+      "themeColor": "blue",
+      "personalInfo": {
+        "firstName": "Sarah",
+        "lastName": "Jenkins",
+        "headline": "Management Consultant",
+        "photo": "",
+        "address": "New York, NY",
+        "phone": "+1 212-555-0143",
+        "email": "sarah.jenkins@example.com",
+        "linkedin": "https://linkedin.com/in/sarah-jenkins",
+        "github": "",
+        "portfolio": "",
+        "location": "New York, NY"
+      },
+      "summary": "Results-oriented consultant specialized in corporate strategy, restructuring analysis, and change management. Trusted advisor to Fortune 500 executives.",
+      "education": [
+        {
+          "degree": "MBA in Strategic Management",
+          "institution": "Columbia Business School",
+          "dates": "2019 — 2021",
+          "gpa": "3.85 / 4.00"
+        }
+      ],
+      "experience": [
+        {
+          "title": "Senior Consultant",
+          "organization": "Apex Advisory Group",
+          "dates": "2021 — Present",
+          "description": [
+            "Formulated a post-merger integration plan for a $1.2B healthcare transaction, realizing $45M in synergies.",
+            "Led operational restructuring for a major logistics provider, improving EBITDA margin by 340 bps."
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "title": "Market Entry Analysis — Fintech Sector",
+          "dates": "2023",
+          "description": [
+            "Conducted a comprehensive target market validation and regulatory roadmap for a European neobank expanding into the US."
+          ]
+        }
+      ],
+      "skills": [
+        { "category": "Core Competencies", "skills": ["Corporate Strategy", "M&A Integration", "Financial Modeling", "EBITDA Optimization"] },
+        { "category": "Tools", "skills": ["Excel (VBA)", "PowerPoint", "Tableau", "Think-Cell"] }
+      ],
+      "achievements": [
+        "Consultant of the Year — Apex Advisory Group, 2024",
+        "Beta Gamma Sigma National Honor Society"
+      ],
+      "languages": ["English (Native)", "French (Fluent)", "Mandarin (Conversational)"],
+      "interests": ["Macroeconomics", "Wine Tasting", "Marathon Running"],
+      "references": [],
+      "showPhoto": false,
+      "showGPA": true,
+      "enabledSections": {
+        "summary": true,
+        "experience": true,
+        "projects": true,
+        "skills": true,
+        "education": true,
+        "achievements": true,
+        "languages": true,
+        "interests": true,
+        "technicalWriting": false,
+        "problemSolving": false,
+        "references": false
+      }
+    }
+  }
+]
