@@ -21,6 +21,9 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: "Presume",
   description: "Build professional LaTeX resumes instantly. Minimalist B&W design, zero complexity, instant PDF.",
+  icons: {
+    icon: "/assets/Presume.png",
+  },
 };
 
 export default function RootLayout({

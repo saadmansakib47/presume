@@ -43,8 +43,12 @@ function AppLoader({ onDone }: { onDone: () => void }) {
       className={`fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center gap-6 ${fadeOut ? 'loader-fade-out' : 'loader-fade-in'}`}
     >
       {/* Icon */}
-      <div className="w-14 h-14 rounded-2xl bg-zinc-950 flex items-center justify-center shadow-lg">
-        <Code2 size={28} className="text-white" strokeWidth={2.5} />
+      <div className="w-14 h-14 rounded-2xl bg-transparent flex items-center justify-center">
+        <img
+          src="/assets/Presume.png"
+          alt="Presume Logo"
+          className="w-8 h-8 object-contain"
+        />
       </div>
 
       {/* Title */}
@@ -254,11 +258,10 @@ function MobileTabBar({
       <div className="flex">
         <button
           onClick={() => onTabChange('form')}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
-            activeTab === 'form'
-              ? 'text-zinc-950 bg-zinc-50'
-              : 'text-zinc-400 hover:text-zinc-700'
-          }`}
+          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${activeTab === 'form'
+            ? 'text-zinc-950 bg-zinc-50'
+            : 'text-zinc-400 hover:text-zinc-700'
+            }`}
         >
           <PencilLine size={18} strokeWidth={activeTab === 'form' ? 2.5 : 2} />
           <span>Edit</span>
@@ -266,11 +269,10 @@ function MobileTabBar({
         <div className="w-px bg-zinc-200 my-2" />
         <button
           onClick={() => onTabChange('preview')}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
-            activeTab === 'preview'
-              ? 'text-zinc-950 bg-zinc-50'
-              : 'text-zinc-400 hover:text-zinc-700'
-          }`}
+          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${activeTab === 'preview'
+            ? 'text-zinc-950 bg-zinc-50'
+            : 'text-zinc-400 hover:text-zinc-700'
+            }`}
         >
           <Eye size={18} strokeWidth={activeTab === 'preview' ? 2.5 : 2} />
           <span>Preview</span>
@@ -402,8 +404,12 @@ export default function PresumePage() {
               onClick={goToLanding}
               className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group shrink-0"
             >
-              <div className="w-8 h-8 rounded-[7px] bg-zinc-950 flex items-center justify-center shadow-sm group-hover:bg-zinc-800 transition">
-                <Code2 size={15} className="text-white" strokeWidth={2.5} />
+              <div className="w-8 h-8 rounded-[7px] bg-transparent flex items-center justify-center">
+                <img
+                  src="/assets/Presume.png"
+                  alt="Presume Logo"
+                  className="w-[18px] h-[18px] object-contain"
+                />
               </div>
               <span className="font-black text-sm tracking-tight text-zinc-950 uppercase">
                 Presume
@@ -417,21 +423,19 @@ export default function PresumePage() {
                 <div className="hidden sm:flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
                   <button
                     onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${
-                      cvData.template === 'programmer'
-                        ? 'bg-white text-zinc-950 shadow-sm'
-                        : 'text-zinc-500 hover:text-zinc-800'
-                    }`}
+                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${cvData.template === 'programmer'
+                      ? 'bg-white text-zinc-950 shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-800'
+                      }`}
                   >
                     Programmer
                   </button>
                   <button
                     onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${
-                      cvData.template === 'classic'
-                        ? 'bg-white text-zinc-950 shadow-sm'
-                        : 'text-zinc-500 hover:text-zinc-800'
-                    }`}
+                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${cvData.template === 'classic'
+                      ? 'bg-white text-zinc-950 shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-800'
+                      }`}
                   >
                     Classic
                   </button>
@@ -564,21 +568,19 @@ export default function PresumePage() {
                 <div className="lg:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
                   <button
                     onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${
-                      cvData.template === 'programmer'
-                        ? 'bg-white text-zinc-950 shadow-sm'
-                        : 'text-zinc-500'
-                    }`}
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${cvData.template === 'programmer'
+                      ? 'bg-white text-zinc-950 shadow-sm'
+                      : 'text-zinc-500'
+                      }`}
                   >
                     Programmer
                   </button>
                   <button
                     onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${
-                      cvData.template === 'classic'
-                        ? 'bg-white text-zinc-950 shadow-sm'
-                        : 'text-zinc-500'
-                    }`}
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${cvData.template === 'classic'
+                      ? 'bg-white text-zinc-950 shadow-sm'
+                      : 'text-zinc-500'
+                      }`}
                   >
                     Classic
                   </button>
@@ -590,18 +592,16 @@ export default function PresumePage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
                 {/* Form pane */}
                 <div
-                  className={`lg:col-span-6 space-y-6 no-print lg:max-h-[82vh] lg:overflow-y-auto lg:pr-1 ${
-                    mobileTab === 'form' ? 'block' : 'hidden lg:block'
-                  }`}
+                  className={`lg:col-span-6 space-y-6 no-print lg:max-h-[82vh] lg:overflow-y-auto lg:pr-1 ${mobileTab === 'form' ? 'block' : 'hidden lg:block'
+                    }`}
                 >
                   <CVForm cvData={cvData} setCvData={setCvData} />
                 </div>
 
                 {/* Preview pane */}
                 <div
-                  className={`lg:col-span-6 lg:sticky lg:top-[88px] no-print ${
-                    mobileTab === 'preview' ? 'block' : 'hidden lg:block'
-                  }`}
+                  className={`lg:col-span-6 lg:sticky lg:top-[88px] no-print ${mobileTab === 'preview' ? 'block' : 'hidden lg:block'
+                    }`}
                 >
                   <CvPreview
                     cvData={cvData}
