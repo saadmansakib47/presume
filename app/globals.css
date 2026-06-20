@@ -29,6 +29,8 @@ html, body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  /* Prevent horizontal overflow on mobile */
+  overflow-x: hidden;
 }
 
 /* =========================================
@@ -37,6 +39,11 @@ html, body {
 
 button, [role="button"], a {
   cursor: pointer;
+}
+
+/* Minimum touch target size for mobile accessibility */
+button, [role="button"] {
+  min-height: 36px;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -134,6 +141,60 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* =========================================
+   Mobile Safe Area (bottom tab bar)
+   ========================================= */
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* =========================================
+   CV Preview — Responsive Scaling
+   On mobile the A4 preview (210mm wide) is
+   scaled down to fit the screen width.
+   ========================================= */
+
+.preview-cv {
+  /* On large screens: natural size */
+  transform-origin: top center;
+}
+
+/* LaTeX code panel — constrained height on mobile */
+.latex-code-panel {
+  max-height: 60vh;
+}
+
+@media (min-width: 1024px) {
+  .latex-code-panel {
+    max-height: 72vh;
+  }
+}
+
+/* On small screens scale the CV preview down so it never overflows */
+@media (max-width: 640px) {
+  .preview-scale-wrapper {
+    overflow: hidden;
+  }
+
+  .preview-cv {
+    /* 210mm ≈ 794px at 96dpi. On a 375px viewport that's ~47% scale */
+    transform: scale(0.47);
+    transform-origin: top center;
+    /* Keep layout height proportional so the container doesn't collapse */
+    margin-bottom: calc((0.47 - 1) * 100%);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .preview-cv {
+    /* On tablet-range screens use a gentler scale */
+    transform: scale(0.72);
+    transform-origin: top center;
+    margin-bottom: calc((0.72 - 1) * 100%);
+  }
+}
+
+/* =========================================
    Print Styles — A4 PDF
    ========================================= */
 
@@ -162,5 +223,11 @@ input:focus, textarea:focus, select:focus {
     background: white !important;
     width: 100% !important;
     height: 100% !important;
+  }
+
+  /* Reset preview scaling in print mode */
+  .preview-cv {
+    transform: none !important;
+    margin-bottom: 0 !important;
   }
 }

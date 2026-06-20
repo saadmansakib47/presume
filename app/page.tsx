@@ -17,7 +17,9 @@ import {
   FileText,
   Printer,
   X,
-  Code2
+  Code2,
+  Eye,
+  PencilLine,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -128,11 +130,11 @@ function TemplateModal({
 
   return (
     <div
-      className="modal-backdrop fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-6"
+      className="modal-backdrop fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
       onClick={onClose}
     >
       <div
-        className="modal-panel bg-white rounded-2xl border border-zinc-200 shadow-2xl w-full max-w-2xl p-8 relative"
+        className="modal-panel bg-white rounded-2xl border border-zinc-200 shadow-2xl w-full max-w-2xl p-5 sm:p-8 relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
@@ -144,8 +146,8 @@ function TemplateModal({
           <X size={20} />
         </button>
 
-        <div className="space-y-1 mb-7">
-          <h2 className="text-xl font-black tracking-tight text-zinc-950 uppercase">
+        <div className="space-y-1 mb-6">
+          <h2 className="text-lg sm:text-xl font-black tracking-tight text-zinc-950 uppercase">
             Choose a Template
           </h2>
           <p className="text-sm text-zinc-500 font-medium">
@@ -153,11 +155,11 @@ function TemplateModal({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5">
           {/* Programmer Card */}
           <button
             onClick={() => onSelect('programmer')}
-            className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-4 flex flex-col gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
           >
             <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
               <Image
@@ -165,20 +167,20 @@ function TemplateModal({
                 alt="Programmer Resume Template"
                 fill
                 className="object-cover group-hover:scale-[1.02] transition duration-300"
-                sizes="(max-width: 768px) 100vw, 30vw"
+                sizes="(max-width: 768px) 45vw, 30vw"
                 priority
               />
             </div>
             <div className="flex justify-between items-end">
               <div>
-                <h3 className="font-extrabold text-sm text-zinc-900 uppercase tracking-wide">
+                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
                   Programmer
                 </h3>
-                <p className="text-[11px] text-zinc-400 font-semibold mt-0.5">
-                  Single Column · Tech Focus
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                  Single Column · Tech
                 </p>
               </div>
-              <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition">
+              <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
                 Select →
               </span>
             </div>
@@ -187,7 +189,7 @@ function TemplateModal({
           {/* Classic Card */}
           <button
             onClick={() => onSelect('classic')}
-            className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-4 flex flex-col gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
           >
             <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
               <Image
@@ -195,25 +197,64 @@ function TemplateModal({
                 alt="Classic Resume Template"
                 fill
                 className="object-cover group-hover:scale-[1.02] transition duration-300"
-                sizes="(max-width: 768px) 100vw, 30vw"
+                sizes="(max-width: 768px) 45vw, 30vw"
                 priority
               />
             </div>
             <div className="flex justify-between items-end">
               <div>
-                <h3 className="font-extrabold text-sm text-zinc-900 uppercase tracking-wide">
+                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
                   Classic
                 </h3>
-                <p className="text-[11px] text-zinc-400 font-semibold mt-0.5">
-                  Two-Column · Photo Banner
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                  Two-Column · Photo
                 </p>
               </div>
-              <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition">
+              <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
                 Select →
               </span>
             </div>
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Mobile Bottom Tab Bar ────────────────────────────────────────────────────
+function MobileTabBar({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: 'form' | 'preview';
+  onTabChange: (tab: 'form' | 'preview') => void;
+}) {
+  return (
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-zinc-200 no-print safe-area-bottom">
+      <div className="flex">
+        <button
+          onClick={() => onTabChange('form')}
+          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
+            activeTab === 'form'
+              ? 'text-zinc-950 bg-zinc-50'
+              : 'text-zinc-400 hover:text-zinc-700'
+          }`}
+        >
+          <PencilLine size={18} strokeWidth={activeTab === 'form' ? 2.5 : 2} />
+          <span>Edit</span>
+        </button>
+        <div className="w-px bg-zinc-200 my-2" />
+        <button
+          onClick={() => onTabChange('preview')}
+          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
+            activeTab === 'preview'
+              ? 'text-zinc-950 bg-zinc-50'
+              : 'text-zinc-400 hover:text-zinc-700'
+          }`}
+        >
+          <Eye size={18} strokeWidth={activeTab === 'preview' ? 2.5 : 2} />
+          <span>Preview</span>
+        </button>
       </div>
     </div>
   );
@@ -225,6 +266,8 @@ export default function PresumePage() {
   const [step, setStep] = useState<'landing' | 'builder'>('landing');
   const [showModal, setShowModal] = useState(false);
   const [cvData, setCvData] = useState<CVData>(programmerDefaultCVData);
+  // Mobile builder tab
+  const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form');
 
   const typedMotto = useLIFOTypewriter(50, 1400, 28);
   const latexOutput = generateLatex(cvData);
@@ -232,7 +275,13 @@ export default function PresumePage() {
   const startBuilding = (type: 'programmer' | 'classic') => {
     setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
     setShowModal(false);
+    setMobileTab('form');
     setStep('builder');
+  };
+
+  const goToLanding = () => {
+    setStep('landing');
+    setMobileTab('form');
   };
 
   const handleTemplateSwitch = (type: 'programmer' | 'classic') => {
@@ -284,12 +333,12 @@ export default function PresumePage() {
 
         {/* ── HEADER ────────────────────────────────────────────────────────── */}
         <header className="border-b border-zinc-200 bg-white sticky top-0 z-40 no-print">
-          <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center gap-3">
 
             {/* Logo */}
             <button
-              onClick={() => setStep('landing')}
-              className="flex items-center gap-2.5 cursor-pointer group"
+              onClick={goToLanding}
+              className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group shrink-0"
             >
               <div className="w-8 h-8 rounded-[7px] bg-zinc-950 flex items-center justify-center shadow-sm group-hover:bg-zinc-800 transition">
                 <Code2 size={15} className="text-white" strokeWidth={2.5} />
@@ -301,8 +350,8 @@ export default function PresumePage() {
 
             {/* Builder header actions */}
             {step === 'builder' && (
-              <div className="flex items-center gap-2.5">
-                {/* Template switcher */}
+              <div className="flex items-center gap-1.5 sm:gap-2.5">
+                {/* Template switcher — hidden on xs, visible sm+ */}
                 <div className="hidden sm:flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
                   <button
                     onClick={() => handleTemplateSwitch('programmer')}
@@ -326,18 +375,22 @@ export default function PresumePage() {
                   </button>
                 </div>
 
-                {/* Downloads */}
+                {/* LaTeX download — icon only on xs */}
                 <button
                   onClick={downloadTeX}
-                  className="px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-800 rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition border border-zinc-200 shadow-sm cursor-pointer"
+                  className="px-2 sm:px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-800 rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition border border-zinc-200 shadow-sm cursor-pointer"
+                  title="Download LaTeX (.tex)"
                 >
-                  <FileText size={14} /> LaTeX (.tex)
+                  <FileText size={14} />
+                  <span className="hidden sm:inline">LaTeX (.tex)</span>
                 </button>
                 <button
                   onClick={printPDF}
-                  className="px-3.5 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+                  className="px-2 sm:px-3.5 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+                  title="Print / Save as PDF"
                 >
-                  <Printer size={14} /> Print / PDF
+                  <Printer size={14} />
+                  <span className="hidden sm:inline">Print / PDF</span>
                 </button>
               </div>
             )}
@@ -345,11 +398,11 @@ export default function PresumePage() {
         </header>
 
         {/* ── MAIN ─────────────────────────────────────────────────────────── */}
-        <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-8 flex flex-col justify-center">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col justify-center">
 
           {step === 'landing' ? (
             /* ── LANDING ── */
-            <div className="flex flex-col items-center text-center gap-8 py-16 md:py-24">
+            <div className="flex flex-col items-center text-center gap-6 sm:gap-8 py-10 sm:py-16 md:py-24">
 
               {/* Badge */}
               <div className="inline-flex items-center gap-1.5 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-zinc-500">
@@ -358,20 +411,20 @@ export default function PresumePage() {
 
               {/* Hero heading */}
               <div className="space-y-3 max-w-2xl">
-                <h1 className="text-5xl md:text-6xl font-black tracking-tight text-zinc-950 uppercase leading-none">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-zinc-950 uppercase leading-none">
                   Build Resumes.<br />Instant Compile.
                 </h1>
 
                 {/* LIFO Typewriter motto */}
                 <div className="min-h-[28px] flex items-center justify-center">
-                  <p className="text-base md:text-lg text-zinc-400 font-semibold typing-caret pr-0.5">
+                  <p className="text-sm sm:text-base md:text-lg text-zinc-400 font-semibold typing-caret pr-0.5">
                     {typedMotto}
                   </p>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-zinc-500 text-sm leading-relaxed max-w-md">
+              <p className="text-zinc-500 text-sm leading-relaxed max-w-sm sm:max-w-md px-2">
                 Land, pick a format, fill the form, and get a production-ready resume instantly.
                 No signup, no surveys, no bloat. Fast, simple, and clean.
               </p>
@@ -380,13 +433,13 @@ export default function PresumePage() {
               <button
                 id="build-resume-btn"
                 onClick={() => setShowModal(true)}
-                className="px-8 py-3.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-[12px] text-sm font-extrabold transition shadow-lg cursor-pointer"
+                className="px-7 sm:px-8 py-3 sm:py-3.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-[12px] text-sm font-extrabold transition shadow-lg cursor-pointer"
               >
                 Build Resume →
               </button>
 
               {/* Subtle template preview strip */}
-              <div className="grid grid-cols-2 gap-4 mt-4 max-w-sm w-full opacity-70 hover:opacity-100 transition-opacity">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-2 sm:mt-4 max-w-[280px] sm:max-w-sm w-full opacity-70 hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => setShowModal(true)}
                   className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
@@ -398,7 +451,7 @@ export default function PresumePage() {
                     className="object-cover group-hover:scale-[1.03] transition duration-300"
                     sizes="200px"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1.5 text-[10px] font-bold text-zinc-600 text-center uppercase tracking-wider">
+                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1.5 text-[9px] sm:text-[10px] font-bold text-zinc-600 text-center uppercase tracking-wider">
                     Programmer
                   </div>
                 </button>
@@ -413,7 +466,7 @@ export default function PresumePage() {
                     className="object-cover group-hover:scale-[1.03] transition duration-300"
                     sizes="200px"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1.5 text-[10px] font-bold text-zinc-600 text-center uppercase tracking-wider">
+                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1.5 text-[9px] sm:text-[10px] font-bold text-zinc-600 text-center uppercase tracking-wider">
                     Classic
                   </div>
                 </button>
@@ -422,21 +475,21 @@ export default function PresumePage() {
 
           ) : (
             /* ── BUILDER ── */
-            <div className="flex flex-col gap-5">
-              {/* Back + mobile template switcher */}
+            <div className="flex flex-col gap-4 sm:gap-5 pb-16 lg:pb-0">
+              {/* Back + desktop mobile template switcher row */}
               <div className="flex justify-between items-center no-print pb-1">
                 <button
-                  onClick={() => setStep('landing')}
+                  onClick={goToLanding}
                   className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 text-xs font-bold transition uppercase tracking-wider cursor-pointer"
                 >
                   <ChevronLeft size={16} /> Back
                 </button>
 
-                {/* Mobile template switcher */}
-                <div className="sm:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
+                {/* Mobile template switcher (visible on xs/sm, hidden on lg+) */}
+                <div className="lg:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
                   <button
                     onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-3 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${
                       cvData.template === 'programmer'
                         ? 'bg-white text-zinc-950 shadow-sm'
                         : 'text-zinc-500'
@@ -446,7 +499,7 @@ export default function PresumePage() {
                   </button>
                   <button
                     onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-3 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${
                       cvData.template === 'classic'
                         ? 'bg-white text-zinc-950 shadow-sm'
                         : 'text-zinc-500'
@@ -457,14 +510,24 @@ export default function PresumePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Form */}
-                <div className="lg:col-span-6 space-y-6 no-print max-h-[82vh] overflow-y-auto pr-1">
+              {/* Desktop: side-by-side grid */}
+              {/* Mobile: single pane controlled by mobileTab */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
+                {/* Form pane */}
+                <div
+                  className={`lg:col-span-6 space-y-6 no-print lg:max-h-[82vh] lg:overflow-y-auto lg:pr-1 ${
+                    mobileTab === 'form' ? 'block' : 'hidden lg:block'
+                  }`}
+                >
                   <CVForm cvData={cvData} setCvData={setCvData} />
                 </div>
 
-                {/* Preview */}
-                <div className="lg:col-span-6 h-full min-h-[500px] lg:sticky lg:top-[88px] no-print">
+                {/* Preview pane */}
+                <div
+                  className={`lg:col-span-6 lg:sticky lg:top-[88px] no-print ${
+                    mobileTab === 'preview' ? 'block' : 'hidden lg:block'
+                  }`}
+                >
                   <CvPreview cvData={cvData} setCvData={setCvData} latexOutput={latexOutput} />
                 </div>
               </div>
@@ -488,6 +551,11 @@ export default function PresumePage() {
           </p>
         </footer>
       </div>
+
+      {/* Mobile bottom tab bar — only shown in builder */}
+      {step === 'builder' && (
+        <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
+      )}
     </>
   );
 }
