@@ -1,14 +1,14 @@
-# NoirCV — LaTeX Resume Builder
+# Presume : LaTeX Resume Builder
 
 > LaTeX resume precision. Minimalist design. Zero friction.
 
-**NoirCV** is a simple, premium, and lightning-fast LaTeX CV generator. Built on top of a B&W (Noir) aesthetic system, it bridges the gap between raw LaTeX precision and visual user-friendliness.
+**Pesume** is a simple, premium, and lightning-fast LaTeX CV generator. Built on top of a B&W aesthetic system, it bridges the gap between raw LaTeX precision and visual user-friendliness.
 
 No signups, no surveys, no trackers, and no advertisements. Choose a template, write your info, and instantly download a `.tex` source file or print a pixel-perfect PDF via browser compilation.
 
 ---
 
-## 🎨 Visual Identity
+## Visual Identity
 
 - **Theme**: Premium High-Contrast Black & White (Noir) with sleek card containers.
 - **Typography**: Set in Google Fonts' **Nunito** and clean sans-serif families for a soft yet professional texture.
@@ -17,7 +17,7 @@ No signups, no surveys, no trackers, and no advertisements. Choose a template, w
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 1. **Dual Templates**:
    - **Programmer CV**: A centered, single-column design focusing heavily on languages, tools, open-source projects, and technical milestones.
@@ -28,7 +28,7 @@ No signups, no surveys, no trackers, and no advertisements. Choose a template, w
 
 ---
 
-## 📂 Codebase Architecture
+## Codebase Architecture
 
 ```
 noircv/
@@ -56,36 +56,45 @@ noircv/
 
 ---
 
-## 🛠️ Local Development
+## Local Development
 
 ### 1. Installation
+
 Clone the repository and install the dependencies:
+
 ```bash
 npm install
 ```
 
 ### 2. Run Dev Server
+
 Launch the local Next.js environment:
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 3. Production Build
+
 Verify that compilation compiles error-free:
+
 ```bash
 npm run build
 ```
 
 ---
 
-## 🔮 Roadmap & Extension Plans
+## Roadmap & Extension Plans
 
 ### Sprint 2: AI Chatbot Integration
+
 - Introduce an inline chat window powered by the Gemini API.
-- Users can write simple conversational prompts (e.g., *"Make my experience descriptions sound more active"* or *"Adjust the sidebar spacing"*).
+- Users can write simple conversational prompts (e.g., _"Make my experience descriptions sound more active"_ or _"Adjust the sidebar spacing"_).
 - The bot will update the `cvData` state or return clean style tweaks automatically.
 
 ### Sprint 3: Serverless LaTeX Backend
+
 - Set up an API route that sends the generated `.tex` code to a microservice running a TeXLive Docker container.
 - It will return compiled binary PDF attachments directly, maintaining zero local compilation requirements.
