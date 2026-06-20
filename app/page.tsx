@@ -271,6 +271,15 @@ export default function PresumePage() {
 
   const typedMotto = useLIFOTypewriter(50, 1400, 28);
   const latexOutput = generateLatex(cvData);
+  const [editedLatex, setEditedLatex] = useState('');
+  const [isLatexEdited, setIsLatexEdited] = useState(false);
+
+  // Sync with form output if not edited
+  useEffect(() => {
+    if (!isLatexEdited) {
+      setEditedLatex(latexOutput);
+    }
+  }, [latexOutput, isLatexEdited]);
 
   const startBuilding = (type: 'programmer' | 'classic') => {
     setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
@@ -303,7 +312,7 @@ export default function PresumePage() {
   };
 
   const downloadTeX = () => {
-    const blob = new Blob([latexOutput], { type: 'text/plain' });
+    const blob = new Blob([editedLatex || latexOutput], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -528,7 +537,15 @@ export default function PresumePage() {
                     mobileTab === 'preview' ? 'block' : 'hidden lg:block'
                   }`}
                 >
-                  <CvPreview cvData={cvData} setCvData={setCvData} latexOutput={latexOutput} />
+                  <CvPreview
+                    cvData={cvData}
+                    setCvData={setCvData}
+                    latexOutput={latexOutput}
+                    editedLatex={editedLatex}
+                    setEditedLatex={setEditedLatex}
+                    isLatexEdited={isLatexEdited}
+                    setIsLatexEdited={setIsLatexEdited}
+                  />
                 </div>
               </div>
 
