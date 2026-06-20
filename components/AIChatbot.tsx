@@ -35,7 +35,7 @@ export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSend = (textToSend: string) => {
+  const handleSend = async (textToSend: string) => {
     if (!textToSend.trim()) return;
 
     const userMsg: Message = {
@@ -49,17 +49,48 @@ export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
     setInputValue('');
     setIsTyping(true);
 
-    // Mock Response
-    setTimeout(() => {
-      setIsTyping(false);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: textToSend,
+          latexCode: latexCode,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Server responded with status ${response.status}`);
+      }
+
+      const result = await response.json();
+
       const assistantMsg: Message = {
         id: Math.random().toString(),
         sender: 'assistant',
-        text: `Here is a mock response matching your prompt: "${textToSend}". Once the API integration is complete, I'll analyze your LaTeX code and dynamically generate edits, spacing adjustments, or wording improvements for you.`,
+        text: result.message || "I processed the request but couldn't get a description message.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMsg]);
-    }, 1200);
+
+      if (result.updatedLatex && onUpdateLatex) {
+        onUpdateLatex(result.updatedLatex);
+      }
+    } catch (err: any) {
+      console.error('Chat API Error:', err);
+      const errorMsg: Message = {
+        id: Math.random().toString(),
+        sender: 'assistant',
+        text: `Error: ${err.message || 'Failed to get a response. Please verify that GEMINI_API_KEY or OPENROUTER_API_KEY is configured in your environment.'}`,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
