@@ -235,7 +235,7 @@ function TemplateModal({
               onBrowse();
               onClose();
             }}
-            className="px-4 py-2 bg-black hover:bg-zinc-200 text-white rounded-[10px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2 bg-black hover:bg-black/90 text-white rounded-[10px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
           >
             Browse Community Presets
           </button>
