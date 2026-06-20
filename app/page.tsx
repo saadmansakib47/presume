@@ -224,7 +224,7 @@ function TemplateModal({
 
         <div className="mt-6 pt-4 border-t border-zinc-150 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs text-zinc-450 font-semibold uppercase tracking-wider">
-            Looking for more configurations?
+            Looking for more templates?
           </p>
           <button
             onClick={() => {
