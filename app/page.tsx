@@ -20,6 +20,7 @@ import {
   Code2,
   Eye,
   PencilLine,
+  Globe,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -271,18 +272,34 @@ export default function PresumePage() {
 
   const typedMotto = useLIFOTypewriter(50, 1400, 28);
   const latexOutput = generateLatex(cvData);
-  const [editedLatex, setEditedLatex] = useState('');
-  const [isLatexEdited, setIsLatexEdited] = useState(false);
+  const [customLatex, setCustomLatex] = useState<string | null>(null);
 
-  // Sync with form output if not edited
-  useEffect(() => {
-    if (!isLatexEdited) {
-      setEditedLatex(latexOutput);
+  const [generatingPortfolio, setGeneratingPortfolio] = useState(false);
+
+  const handleGeneratePortfolio = async () => {
+    setGeneratingPortfolio(true);
+    try {
+      const { generatePortfolioZip } = await import('@/lib/portfolio-generator');
+      const blob = await generatePortfolioZip(cvData);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${cvData.personalInfo.firstName || 'My'}_Portfolio.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Failed to generate portfolio:', err);
+      alert('Failed to generate portfolio. Please try again.');
+    } finally {
+      setGeneratingPortfolio(false);
     }
-  }, [latexOutput, isLatexEdited]);
+  };
 
   const startBuilding = (type: 'programmer' | 'classic') => {
     setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
+    setCustomLatex(null);
     setShowModal(false);
     setMobileTab('form');
     setStep('builder');
@@ -291,9 +308,11 @@ export default function PresumePage() {
   const goToLanding = () => {
     setStep('landing');
     setMobileTab('form');
+    setCustomLatex(null);
   };
 
   const handleTemplateSwitch = (type: 'programmer' | 'classic') => {
+    setCustomLatex(null);
     const basePreset = type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData;
     setCvData(prev => ({
       ...basePreset,
@@ -312,7 +331,7 @@ export default function PresumePage() {
   };
 
   const downloadTeX = () => {
-    const blob = new Blob([editedLatex || latexOutput], { type: 'text/plain' });
+    const blob = new Blob([customLatex !== null ? customLatex : latexOutput], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -383,6 +402,19 @@ export default function PresumePage() {
                     Classic
                   </button>
                 </div>
+
+                {/* Portfolio Website Builder — icon only on xs */}
+                <button
+                  onClick={handleGeneratePortfolio}
+                  disabled={generatingPortfolio}
+                  className="px-2 sm:px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-800 rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition border border-zinc-200 shadow-sm cursor-pointer disabled:opacity-50"
+                  title="Generate Portfolio Website (.zip)"
+                >
+                  <Globe size={14} className={generatingPortfolio ? 'animate-spin' : ''} />
+                  <span className="hidden sm:inline">
+                    {generatingPortfolio ? 'Generating...' : 'Portfolio Website'}
+                  </span>
+                </button>
 
                 {/* LaTeX download — icon only on xs */}
                 <button
@@ -541,10 +573,8 @@ export default function PresumePage() {
                     cvData={cvData}
                     setCvData={setCvData}
                     latexOutput={latexOutput}
-                    editedLatex={editedLatex}
-                    setEditedLatex={setEditedLatex}
-                    isLatexEdited={isLatexEdited}
-                    setIsLatexEdited={setIsLatexEdited}
+                    customLatex={customLatex}
+                    setCustomLatex={setCustomLatex}
                   />
                 </div>
               </div>

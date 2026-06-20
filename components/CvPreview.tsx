@@ -12,26 +12,25 @@ interface Props {
   cvData: CVData;
   setCvData: React.Dispatch<React.SetStateAction<CVData>>;
   latexOutput: string;
-  editedLatex: string;
-  setEditedLatex: (val: string) => void;
-  isLatexEdited: boolean;
-  setIsLatexEdited: (val: boolean) => void;
+  customLatex: string | null;
+  setCustomLatex: (val: string | null) => void;
 }
 
 export default function CvPreview({
   cvData,
   setCvData,
   latexOutput,
-  editedLatex,
-  setEditedLatex,
-  isLatexEdited,
-  setIsLatexEdited,
+  customLatex,
+  setCustomLatex,
 }: Props) {
   const [viewMode, setViewMode] = useState<'visual' | 'latex'>('visual');
   const [copied, setCopied] = useState(false);
 
+  const activeLatex = customLatex !== null ? customLatex : latexOutput;
+  const isLatexEdited = customLatex !== null;
+
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(editedLatex);
+    navigator.clipboard.writeText(activeLatex);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -49,7 +48,7 @@ export default function CvPreview({
     const input = document.createElement('input');
     input.type = 'hidden';
     input.name = 'snip';
-    input.value = editedLatex;
+    input.value = activeLatex;
 
     form.appendChild(input);
     document.body.appendChild(form);
@@ -100,8 +99,7 @@ export default function CvPreview({
             {isLatexEdited && (
               <button
                 onClick={() => {
-                  setIsLatexEdited(false);
-                  setEditedLatex(latexOutput);
+                  setCustomLatex(null);
                 }}
                 className="flex items-center gap-1.5 bg-white hover:bg-zinc-100 text-zinc-600 px-2.5 py-1.5 rounded-[8px] text-xs font-bold transition border border-zinc-200 shadow-sm cursor-pointer"
                 title="Reset to match form input"
@@ -182,10 +180,9 @@ export default function CvPreview({
           </div>
         ) : (
           <textarea
-            value={editedLatex}
+            value={activeLatex}
             onChange={(e) => {
-              setEditedLatex(e.target.value);
-              setIsLatexEdited(true);
+              setCustomLatex(e.target.value);
             }}
             className="w-full max-w-4xl h-[500px] lg:h-[600px] font-mono text-[11px] bg-zinc-950 text-zinc-100 p-4 sm:p-5 rounded-[8px] border border-zinc-800 shadow-inner latex-code-panel focus:outline-none focus:ring-1 focus:ring-zinc-700 resize-none font-normal leading-relaxed overflow-y-auto"
             spellCheck={false}
