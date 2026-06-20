@@ -66,21 +66,19 @@ export default function CvPreview({
           <div className="flex bg-zinc-200 p-0.5 rounded-[8px]">
             <button
               onClick={() => setViewMode('visual')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                viewMode === 'visual'
+              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${viewMode === 'visual'
                   ? 'bg-white text-zinc-900 shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
-              }`}
+                }`}
             >
               <Eye size={13} /> Visual
             </button>
             <button
               onClick={() => setViewMode('latex')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                viewMode === 'latex'
+              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${viewMode === 'latex'
                   ? 'bg-white text-zinc-900 shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
-              }`}
+                }`}
             >
               <Code size={13} /> LaTeX
             </button>
@@ -138,22 +136,20 @@ export default function CvPreview({
           <div className="flex bg-zinc-100 p-0.5 rounded-[7px] border border-zinc-200">
             <button
               onClick={() => setTheme('black')}
-              className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${
-                cvData.themeColor === 'black'
+              className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'black'
                   ? 'bg-zinc-950 text-white shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
-              }`}
+                }`}
             >
               <span className="w-2 h-2 rounded-full bg-zinc-950 inline-block border border-zinc-700" />
               Black
             </button>
             <button
               onClick={() => setTheme('blue')}
-              className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${
-                cvData.themeColor === 'blue'
+              className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'blue'
                   ? 'bg-zinc-950 text-white shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
-              }`}
+                }`}
             >
               <span className="w-2 h-2 rounded-full bg-[#1A3A5C] inline-block border border-blue-900" />
               Navy

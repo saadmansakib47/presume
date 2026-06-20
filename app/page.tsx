@@ -14,6 +14,7 @@ import ProgrammerCV from '@/components/templates/ProgrammerCV';
 import { generateLatex } from '@/lib/latex-template';
 import ContributeModal from '@/components/ContributeModal';
 import TemplateBrowserModal from '@/components/TemplateBrowserModal';
+import AIChatbot from '@/components/AIChatbot';
 import {
   ChevronLeft,
   FileText,
@@ -592,7 +593,7 @@ export default function PresumePage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
                 {/* Form pane */}
                 <div
-                  className={`lg:col-span-6 space-y-6 no-print lg:max-h-[82vh] lg:overflow-y-auto lg:pr-1 ${mobileTab === 'form' ? 'block' : 'hidden lg:block'
+                  className={`lg:col-span-6 space-y-6 no-print lg:max-h-[140vh] lg:overflow-y-auto lg:pr-1 ${mobileTab === 'form' ? 'block' : 'hidden lg:block'
                     }`}
                 >
                   <CVForm cvData={cvData} setCvData={setCvData} />
@@ -638,6 +639,13 @@ export default function PresumePage() {
           </button>
         </footer>
       </div>
+
+      {step === 'builder' && (
+        <AIChatbot
+          latexCode={customLatex !== null ? customLatex : latexOutput}
+          onUpdateLatex={(newLatex) => setCustomLatex(newLatex)}
+        />
+      )}
 
       {/* Mobile bottom tab bar — only shown in builder */}
       {step === 'builder' && (
