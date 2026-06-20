@@ -19,7 +19,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Presume — Elegant LaTeX & PDF Resume Builder",
+  title: "Presume",
   description: "Build professional LaTeX resumes instantly. Minimalist B&W design, zero complexity, instant PDF.",
 };
 
