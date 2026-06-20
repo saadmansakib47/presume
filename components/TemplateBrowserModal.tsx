@@ -64,7 +64,6 @@ export default function TemplateBrowserModal({ onSelect, onClose }: Props) {
         {/* Header */}
         <div className="space-y-1 mb-6 pr-6">
           <h2 className="text-lg sm:text-xl font-black tracking-tight text-zinc-950 dark:text-white uppercase flex items-center gap-2">
-            <Sparkles size={20} className="text-zinc-650 dark:text-zinc-450 animate-pulse" />
             Community Templates
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold tracking-wide">
