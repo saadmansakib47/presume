@@ -109,7 +109,7 @@ export default function ClassicCV({ cvData }: Props) {
                   <span className="font-semibold text-[10px] text-zinc-800">{cat.category}</span>
                   <div className="flex flex-wrap gap-1 mt-0.5">
                     {cat.skills.map((skill, sIdx) => (
-                      <span style={{ backgroundColor: tagBg, color: tagText, border: `1px solid ${tagBorder}` }} className="text-[9px] px-1.5 py-0.5 rounded-[4px] font-medium">
+                      <span key={sIdx} style={{ backgroundColor: tagBg, color: tagText, border: `1px solid ${tagBorder}` }} className="text-[9px] px-1.5 py-0.5 rounded-[4px] font-medium">
                         {skill}
                       </span>
                     ))}
