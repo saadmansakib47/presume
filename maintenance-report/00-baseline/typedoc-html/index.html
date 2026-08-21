@@ -1,0 +1,110 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>presume</title><meta name="description" content="Documentation for presume"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="index.html" class="title">presume</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<h1>presume</h1></div>
+<div class="tsd-panel tsd-typography"><h1 id="presume-latex-resume-builder" class="tsd-anchor-link">Presume : LaTeX Resume Builder<a href="#presume-latex-resume-builder" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<blockquote>
+<p>LaTeX resume precision. Minimalist design. Zero friction.</p>
+</blockquote>
+<p><strong>Pesume</strong> is a simple, premium, and lightning-fast LaTeX CV generator. Built on top of a B&amp;W aesthetic system, it bridges the gap between raw LaTeX precision and visual user-friendliness.</p>
+<p>No signups, no surveys, no trackers, and no advertisements. Choose a template, write your info, and instantly download a <code>.tex</code> source file or print a pixel-perfect PDF via browser compilation.</p>
+<hr>
+<h2 id="visual-identity" class="tsd-anchor-link">Visual Identity<a href="#visual-identity" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li><strong>Theme</strong>: Premium High-Contrast Black &amp; White (Noir) with sleek card containers.</li>
+<li><strong>Typography</strong>: Set in Google Fonts' <strong>Nunito</strong> and clean sans-serif families for a soft yet professional texture.</li>
+<li><strong>Borders &amp; Radii</strong>: Harmonized <code>rounded-[10px]</code> containers and buttons matching the aesthetics of Apple design guidelines.</li>
+<li><strong>Transitions</strong>: Subtle typing animation on titles and micro-hover states for interactive elements.</li>
+</ul>
+<hr>
+<h2 id="key-features" class="tsd-anchor-link">Key Features<a href="#key-features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ol>
+<li><strong>Dual Templates</strong>:
+<ul>
+<li><strong>Programmer CV</strong>: A centered, single-column design focusing heavily on languages, tools, open-source projects, and technical milestones.</li>
+<li><strong>Classic CV</strong>: A structured two-column layout with a left sidebar, a circular portrait placeholder, and custom reference sections.</li>
+</ul>
+</li>
+<li><strong>Instant Preview</strong>: Live synchronization between form editing, visual HTML simulation, and real-time LaTeX source generation.</li>
+<li><strong>Print-to-PDF Engine</strong>: Pure frontend PDF generation using custom CSS <code>@media print</code> directives that scales the visual CV directly onto standard A4 paper without headers or interface styling.</li>
+<li><strong>Direct <code>.tex</code> Export</strong>: Download fully escaped, compile-ready LaTeX files designed for immediate local rendering or direct compilation in Overleaf.</li>
+</ol>
+<hr>
+<h2 id="codebase-architecture" class="tsd-anchor-link">Codebase Architecture<a href="#codebase-architecture" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code><span class="hl-0">noircv</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">app</span><span class="hl-1">/</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">globals</span><span class="hl-1">.</span><span class="hl-0">css</span><span class="hl-1">          # </span><span class="hl-0">Noir</span><span class="hl-1"> </span><span class="hl-0">design</span><span class="hl-1"> </span><span class="hl-0">system</span><span class="hl-1">, </span><span class="hl-0">typing</span><span class="hl-1"> </span><span class="hl-0">animations</span><span class="hl-1"> &amp; </span><span class="hl-0">print</span><span class="hl-1">-</span><span class="hl-0">css</span><span class="hl-1"> </span><span class="hl-0">rules</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">layout</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1">           # </span><span class="hl-0">Google</span><span class="hl-1"> </span><span class="hl-0">Nunito</span><span class="hl-1"> </span><span class="hl-0">font</span><span class="hl-1"> </span><span class="hl-0">loading</span><span class="hl-1"> &amp; </span><span class="hl-0">global</span><span class="hl-1"> </span><span class="hl-0">wrappers</span><br/><span class="hl-1">│   └── </span><span class="hl-0">page</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1">             # </span><span class="hl-0">Interactive</span><span class="hl-1"> </span><span class="hl-0">landing</span><span class="hl-1"> </span><span class="hl-0">page</span><span class="hl-1"> &amp; </span><span class="hl-0">builder</span><span class="hl-1"> </span><span class="hl-0">state</span><span class="hl-1"> </span><span class="hl-0">routing</span><br/><span class="hl-1">├── </span><span class="hl-0">components</span><span class="hl-1">/</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">CVForm</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-0">CVForm</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1">       # </span><span class="hl-0">Consolidated</span><span class="hl-1"> </span><span class="hl-0">form</span><span class="hl-1"> </span><span class="hl-0">controller</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-0">PersonalInfo</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1"> # </span><span class="hl-0">Personal</span><span class="hl-1"> </span><span class="hl-0">details</span><span class="hl-1"> </span><span class="hl-0">form</span><span class="hl-1"> &amp; </span><span class="hl-0">adaptive</span><span class="hl-1"> </span><span class="hl-0">photo</span><span class="hl-1"> </span><span class="hl-0">upload</span><br/><span class="hl-1">│   │   └── </span><span class="hl-0">SectionToggles</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1"> </span><span class="hl-0">font</span><span class="hl-1"> </span><span class="hl-0">toggle</span><span class="hl-1"> </span><span class="hl-0">grid</span><br/><span class="hl-1">│   │   └── </span><span class="hl-0">BasicSections</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1">    # </span><span class="hl-0">Interactive</span><span class="hl-1"> </span><span class="hl-0">blocks</span><span class="hl-1"> </span><span class="hl-0">for</span><span class="hl-1"> </span><span class="hl-0">Job</span><span class="hl-1"> </span><span class="hl-0">Exp</span><span class="hl-1">, </span><span class="hl-0">Projects</span><span class="hl-1">, </span><span class="hl-0">Skills</span><span class="hl-1">, </span><span class="hl-0">etc</span><span class="hl-1">.</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">templates</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-0">ClassicCV</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1">    # </span><span class="hl-0">Custom</span><span class="hl-1"> </span><span class="hl-2">HTML</span><span class="hl-1"> </span><span class="hl-0">two</span><span class="hl-1">-</span><span class="hl-0">column</span><span class="hl-1"> </span><span class="hl-0">template</span><span class="hl-1"> </span><span class="hl-0">rendering</span><br/><span class="hl-1">│   │   └── </span><span class="hl-0">ProgrammerCV</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1"> # </span><span class="hl-0">Centered</span><span class="hl-1"> </span><span class="hl-0">single</span><span class="hl-1">-</span><span class="hl-0">column</span><span class="hl-1"> </span><span class="hl-0">template</span><span class="hl-1"> </span><span class="hl-0">rendering</span><br/><span class="hl-1">│   └── </span><span class="hl-0">CvPreview</span><span class="hl-1">.</span><span class="hl-0">tsx</span><span class="hl-1">        # </span><span class="hl-0">High</span><span class="hl-1">-</span><span class="hl-0">fidelity</span><span class="hl-1"> </span><span class="hl-0">preview</span><span class="hl-1"> </span><span class="hl-0">pane</span><span class="hl-1"> &amp; </span><span class="hl-0">LaTeX</span><span class="hl-1"> </span><span class="hl-0">code</span><span class="hl-1"> </span><span class="hl-0">inspector</span><br/><span class="hl-1">├── </span><span class="hl-0">lib</span><span class="hl-1">/</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">cv</span><span class="hl-1">-</span><span class="hl-0">types</span><span class="hl-1">.</span><span class="hl-0">ts</span><span class="hl-1">          # </span><span class="hl-0">Strongly</span><span class="hl-1"> </span><span class="hl-0">typed</span><span class="hl-1"> </span><span class="hl-0">interfaces</span><span class="hl-1"> &amp; </span><span class="hl-0">preset</span><span class="hl-1"> </span><span class="hl-0">templates</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">latex</span><span class="hl-1">-</span><span class="hl-0">template</span><span class="hl-1">.</span><span class="hl-0">ts</span><span class="hl-1">    # </span><span class="hl-0">Dual</span><span class="hl-1"> </span><span class="hl-0">LaTeX</span><span class="hl-1"> </span><span class="hl-0">code</span><span class="hl-1"> </span><span class="hl-0">generation</span><span class="hl-1"> </span><span class="hl-0">engines</span><br/><span class="hl-1">│   └── </span><span class="hl-0">latex</span><span class="hl-1">-</span><span class="hl-0">utils</span><span class="hl-1">.</span><span class="hl-0">ts</span><span class="hl-1">       # </span><span class="hl-0">LaTeX</span><span class="hl-1"> </span><span class="hl-0">character</span><span class="hl-1"> </span><span class="hl-0">escaping</span><span class="hl-1"> &amp; </span><span class="hl-0">formatting</span><span class="hl-1"> </span><span class="hl-0">helpers</span><br/><span class="hl-1">└── </span><span class="hl-0">public</span><span class="hl-1">/</span><br/><span class="hl-1">    └── </span><span class="hl-0">templates</span><span class="hl-1">/           # </span><span class="hl-0">Visual</span><span class="hl-1"> </span><span class="hl-0">template</span><span class="hl-1"> </span><span class="hl-0">preview</span><span class="hl-1"> </span><span class="hl-0">graphics</span>
+</code><button>Copy</button></pre>
+
+<hr>
+<h2 id="local-development" class="tsd-anchor-link">Local Development<a href="#local-development" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="1-installation" class="tsd-anchor-link">1. Installation<a href="#1-installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Clone the repository and install the dependencies:</p>
+<pre><code class="bash"><span class="hl-3">npm</span><span class="hl-1"> </span><span class="hl-4">install</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="2-run-dev-server" class="tsd-anchor-link">2. Run Dev Server<a href="#2-run-dev-server" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Launch the local Next.js environment:</p>
+<pre><code class="bash"><span class="hl-3">npm</span><span class="hl-1"> </span><span class="hl-4">run</span><span class="hl-1"> </span><span class="hl-4">dev</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Open <a href="http://localhost:3000">http://localhost:3000</a> in your browser.</p>
+<h3 id="3-production-build" class="tsd-anchor-link">3. Production Build<a href="#3-production-build" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Verify that compilation compiles error-free:</p>
+<pre><code class="bash"><span class="hl-3">npm</span><span class="hl-1"> </span><span class="hl-4">run</span><span class="hl-1"> </span><span class="hl-4">build</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="roadmap-extension-plans" class="tsd-anchor-link">Roadmap &amp; Extension Plans<a href="#roadmap-extension-plans" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="sprint-2-ai-chatbot-integration" class="tsd-anchor-link">Sprint 2: AI Chatbot Integration<a href="#sprint-2-ai-chatbot-integration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li>Introduce an inline chat window powered by the Gemini API.</li>
+<li>Users can write simple conversational prompts (e.g., <em>&quot;Make my experience descriptions sound more active&quot;</em> or <em>&quot;Adjust the sidebar spacing&quot;</em>).</li>
+<li>The bot will update the <code>cvData</code> state or return clean style tweaks automatically.</li>
+</ul>
+<h3 id="sprint-3-serverless-latex-backend" class="tsd-anchor-link">Sprint 3: Serverless LaTeX Backend<a href="#sprint-3-serverless-latex-backend" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li>Set up an API route that sends the generated <code>.tex</code> code to a microservice running a TeXLive Docker container.</li>
+<li>It will return compiled binary PDF attachments directly, maintaining zero local compilation requirements.</li>
+</ul>
+</div></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#presume-latex-resume-builder"><span>Presume : <wbr/>La<wbr/>Te<wbr/>X <wbr/>Resume <wbr/>Builder</span></a>
+<ul>
+<li><a href="#visual-identity"><span>Visual <wbr/>Identity</span></a></li>
+<li><a href="#key-features"><span>Key <wbr/>Features</span></a></li>
+<li><a href="#codebase-architecture"><span>Codebase <wbr/>Architecture</span></a></li>
+<li><a href="#local-development"><span>Local <wbr/>Development</span></a></li>
+<li>
+<ul>
+<li><a href="#1-installation"><span>1. <wbr/>Installation</span></a></li>
+<li><a href="#2-run-dev-server"><span>2. <wbr/>Run <wbr/>Dev <wbr/>Server</span></a></li>
+<li><a href="#3-production-build"><span>3. <wbr/>Production <wbr/>Build</span></a></li></ul></li>
+<li><a href="#roadmap-extension-plans"><span>Roadmap &amp; <wbr/>Extension <wbr/>Plans</span></a></li>
+<li>
+<ul>
+<li><a href="#sprint-2-ai-chatbot-integration"><span>Sprint 2: <wbr/>AI <wbr/>Chatbot <wbr/>Integration</span></a></li>
+<li><a href="#sprint-3-serverless-latex-backend"><span>Sprint 3: <wbr/>Serverless <wbr/>La<wbr/>Te<wbr/>X <wbr/>Backend</span></a></li></ul></li></ul></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="modules.html">presume</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

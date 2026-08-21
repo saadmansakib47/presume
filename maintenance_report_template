@@ -1,0 +1,110 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{lastpage}
+\usepackage[table]{xcolor}
+\usepackage[shortlabels]{enumitem}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{tocloft}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{listings}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue,
+}
+
+\definecolor{codegray}{HTML}{F4F4F4}
+\definecolor{codegreen}{HTML}{2E7D32}
+\definecolor{codepurple}{HTML}{6A0572}
+\definecolor{codeblue}{HTML}{1565C0}
+
+\lstdefinestyle{codestyle}{
+    backgroundcolor=\color{codegray},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue}\bfseries,
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\tiny\color{gray},
+    showspaces=false,
+    showstringspaces=false,
+    frame=single,
+    rulecolor=\color{gray!30},
+    xleftmargin=10pt,
+    xrightmargin=5pt,
+}
+\lstset{style=codestyle}
+
+% Header / Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{SWE 4801: Software Maintenance}
+\fancyhead[R]{Lab 02: Code Property Graph Generation}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[C]{Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesecskip}{0.5em}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[width=0.2\textwidth]{images/iut_logo.png}
+    \end{figure}
+    \begin{center}
+        \vspace*{0.5cm}
+        \noindent\rule{\textwidth}{1.5pt}
+        \vspace{0.3cm}
+
+        \Huge{\textbf{Islamic University of Technology}}\\[0.2cm]
+        \large{\textbf{Department of Computer Science and Engineering}}\\
+        \vspace{0.2cm}
+        \Large{\textbf{SWE 4801: Software Maintenance}}\\
+        \Large{Summer, 2024--2025}\\
+        \noindent\rule{\textwidth}{0.5pt}
+
+        \vspace{1.5cm}
+        \Large{Lab Project : Maintenance Activities on Presume}\\[0.2cm]
+        \vspace{1.5cm}
+
+        \large{
+            Saadman Sakib\\[0.2cm]
+            ID: 210042165\\[0.2cm]
+            Program: B.Sc. Engg. in SWE\\[0.2cm]
+            Department of Computer Science and Engineering\\[0.2cm]
+            Islamic University of Technology
+        }
+
+        \vspace{1.5cm}
+        \large{Date: \today}
+    \end{center}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{}
+
+\end{thebibliography}
+\end{document}
