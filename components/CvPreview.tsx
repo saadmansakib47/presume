@@ -28,6 +28,8 @@ export default function CvPreview({
 
   const activeLatex = customLatex !== null ? customLatex : latexOutput;
   const isLatexEdited = customLatex !== null;
+  const lineCount = activeLatex ? activeLatex.split('\n').length : 0;
+  const byteSize = activeLatex ? (new Blob([activeLatex]).size / 1024).toFixed(1) : '0';
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(activeLatex);
@@ -87,6 +89,12 @@ export default function CvPreview({
           {viewMode === 'latex' && isLatexEdited && (
             <span className="hidden md:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold uppercase tracking-wider animate-pulse">
               Manual Edits Active
+            </span>
+          )}
+
+          {viewMode === 'latex' && (
+            <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-[6px] bg-zinc-100 border border-zinc-200 text-zinc-600 text-[11px] font-medium">
+              {lineCount} lines · {byteSize} KB
             </span>
           )}
         </div>
