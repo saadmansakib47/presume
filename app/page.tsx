@@ -20,7 +20,6 @@ import {
   FileText,
   Printer,
   X,
-  Code2,
   Eye,
   PencilLine,
   Globe,
@@ -45,10 +44,13 @@ function AppLoader({ onDone }: { onDone: () => void }) {
     >
       {/* Icon */}
       <div className="w-14 h-14 rounded-2xl bg-transparent flex items-center justify-center">
-        <img
+        <Image
           src="/assets/Presume.png"
           alt="Presume Logo"
+          width={32}
+          height={32}
           className="w-8 h-8 object-contain"
+          priority
         />
       </div>
 
@@ -406,9 +408,11 @@ export default function PresumePage() {
               className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group shrink-0"
             >
               <div className="w-8 h-8 rounded-[7px] bg-transparent flex items-center justify-center">
-                <img
+                <Image
                   src="/assets/Presume.png"
                   alt="Presume Logo"
+                  width={18}
+                  height={18}
                   className="w-[18px] h-[18px] object-contain"
                 />
               </div>
