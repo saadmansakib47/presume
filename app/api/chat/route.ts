@@ -154,11 +154,13 @@ ${latexCode}
 
     const result = JSON.parse(responseText);
     return NextResponse.json(result);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in chat API route:', error);
+    const errorMessage =
+      error instanceof Error ? error.message : 'An error occurred while processing your request.';
     return NextResponse.json(
       {
-        error: error.message || 'An error occurred while processing your request.',
+        error: errorMessage,
       },
       { status: 500 }
     );

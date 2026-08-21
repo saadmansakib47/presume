@@ -1,19 +1,21 @@
-// lib/latex-utils.ts
-import type { EducationEntry, ProjectEntry, SkillCategory } from './cv-types';
+import type { EducationEntry, SkillCategory } from './cv-types';
+
+const LATEX_ESCAPE_MAP: Record<string, string> = {
+  '\\': '\\textbackslash{}',
+  '&': '\\&',
+  '%': '\\%',
+  '$': '\\$',
+  '#': '\\#',
+  '_': '\\_',
+  '{': '\\{',
+  '}': '\\}',
+  '~': '\\textasciitilde{}',
+  '^': '\\textasciicircum{}',
+};
 
 export function escapeLaTeX(text: string | undefined | null): string {
   if (!text) return '';
-  return String(text)
-    .replace(/\\/g, '\\textbackslash{}')
-    .replace(/&/g, '\\&')
-    .replace(/%/g, '\\%')
-    .replace(/\$/g, '\\$')
-    .replace(/#/g, '\\#')
-    .replace(/_/g, '\\_')
-    .replace(/{/g, '\\{')
-    .replace(/}/g, '\\}')
-    .replace(/~/g, '\\textasciitilde{}')
-    .replace(/\^/g, '\\textasciicircum{}');
+  return String(text).replace(/[\\&%$#_{}~^]/g, (match) => LATEX_ESCAPE_MAP[match] || match);
 }
 
 export function formatBulletPoints(items: string[] | undefined): string {
