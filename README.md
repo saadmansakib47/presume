@@ -81,25 +81,29 @@ Clone the repository and install dependencies:
 npm install
 ```
 
-### 2. Run Dev Server
+### 2. Run Dev Server (Recommended for Development)
 
-Launch the local Next.js development server:
+Launch the local Next.js development server with hot reloading:
 
 ```bash
 npm run dev
 ```
 
-> **Note for Windows users**: If your workspace directory path contains an ampersand (e.g. `E:\R&D\presume`), run `npx next dev` directly in PowerShell or move the directory to a path without `&` to prevent the Windows cmd script runner from misinterpreting `&` as a command separator.
-
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 3. Production Build
+### 3. Production Build & Start
 
-Verify that compilation builds error-free:
+To build and start the optimized production server:
 
 ```bash
+# First, create the production build (.next bundle)
 npm run build
+
+# Then, start the production server
+npm start
 ```
+
+> **Note**: `npm start` runs the compiled production build, so `npm run build` must be executed before `npm start`. For day-to-day development with live preview, use `npm run dev`.
 
 ---
 
