@@ -5,13 +5,18 @@ import { useState, useEffect, useRef } from 'react';
 import {
   CVData,
   programmerDefaultCVData,
-  classicDefaultCVData
+  classicDefaultCVData,
+  BiodataData,
+  defaultBiodataData,
 } from '@/lib/cv-types';
 import CVForm from '@/components/CVForm/CVForm';
+import BiodataForm from '@/components/BiodataForm/BiodataForm';
 import CvPreview from '@/components/CvPreview';
 import ClassicCV from '@/components/templates/ClassicCV';
 import ProgrammerCV from '@/components/templates/ProgrammerCV';
+import MarriageBiodataCV from '@/components/templates/MarriageBiodataCV';
 import { generateLatex } from '@/lib/latex-template';
+import { generateBiodataLatex } from '@/lib/biodata-latex';
 import ContributeModal from '@/components/ContributeModal';
 import TemplateBrowserModal from '@/components/TemplateBrowserModal';
 import AIChatbot from '@/components/AIChatbot';
@@ -127,7 +132,7 @@ function TemplateModal({
   onClose,
   onBrowse,
 }: {
-  onSelect: (type: 'programmer' | 'classic') => void;
+  onSelect: (type: 'programmer' | 'classic' | 'biodata') => void;
   onClose: () => void;
   onBrowse: () => void;
 }) {
@@ -146,7 +151,7 @@ function TemplateModal({
       onClick={onClose}
     >
       <div
-        className="modal-panel bg-white rounded-2xl border border-zinc-200 shadow-2xl w-full max-w-2xl p-5 sm:p-8 relative"
+        className="modal-panel bg-white rounded-2xl border border-zinc-200 shadow-2xl w-full max-w-2xl p-5 sm:p-7 relative max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
@@ -158,78 +163,117 @@ function TemplateModal({
           <X size={20} />
         </button>
 
-        <div className="space-y-1 mb-6">
+        <div className="space-y-1 mb-5">
           <h2 className="text-lg sm:text-xl font-black tracking-tight text-zinc-950 uppercase">
             Choose a Template
           </h2>
           <p className="text-sm text-zinc-500 font-medium">
-            Pick your style — you can switch at any time in the builder.
+            Pick your format — professional resume or matrimonial biodata.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-5">
-          {/* Programmer Card */}
-          <button
-            onClick={() => onSelect('programmer')}
-            className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-          >
-            <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
-              <Image
-                src="/templates/programmer.png"
-                alt="Programmer Resume Template"
-                fill
-                className="object-cover group-hover:scale-[1.02] transition duration-300"
-                sizes="(max-width: 768px) 45vw, 30vw"
-                priority
-              />
-            </div>
-            <div className="flex justify-between items-end">
-              <div>
-                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
-                  Programmer
-                </h3>
-                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
-                  Single Column · Tech
-                </p>
+        <div className="overflow-y-auto space-y-4 pr-1">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {/* Programmer Card */}
+            <button
+              onClick={() => onSelect('programmer')}
+              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-3.5 flex flex-col gap-2.5 sm:gap-3 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            >
+              <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
+                <Image
+                  src="/templates/programmer.png"
+                  alt="Programmer Resume Template"
+                  fill
+                  className="object-cover group-hover:scale-[1.02] transition duration-300"
+                  sizes="(max-width: 768px) 45vw, 30vw"
+                  priority
+                />
               </div>
-              <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
-                Select →
-              </span>
-            </div>
-          </button>
+              <div className="flex justify-between items-end">
+                <div>
+                  <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
+                    Programmer
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                    Single Column · Tech
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
+                  Select →
+                </span>
+              </div>
+            </button>
 
-          {/* Classic Card */}
+            {/* Classic Card */}
+            <button
+              onClick={() => onSelect('classic')}
+              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-3.5 flex flex-col gap-2.5 sm:gap-3 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            >
+              <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
+                <Image
+                  src="/templates/classic.png"
+                  alt="Classic Resume Template"
+                  fill
+                  className="object-cover group-hover:scale-[1.02] transition duration-300"
+                  sizes="(max-width: 768px) 45vw, 30vw"
+                  priority
+                />
+              </div>
+              <div className="flex justify-between items-end">
+                <div>
+                  <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
+                    Classic
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                    Two-Column · Photo
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
+                  Select →
+                </span>
+              </div>
+            </button>
+          </div>
+
+          {/* Marriage Resume Card below Programmer and Classic */}
           <button
-            onClick={() => onSelect('classic')}
-            className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            onClick={() => onSelect('biodata')}
+            className="group text-left w-full bg-gradient-to-r from-emerald-50/40 via-white to-zinc-50 border border-zinc-200 hover:border-emerald-800/80 rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row gap-3.5 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
           >
-            <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
+            <div className="relative aspect-[3/4] w-28 sm:w-32 rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200 shrink-0 mx-auto sm:mx-0">
               <Image
-                src="/templates/classic.png"
-                alt="Classic Resume Template"
+                src="/templates/marriage.png"
+                alt="Marriage Resume Template"
                 fill
                 className="object-cover group-hover:scale-[1.02] transition duration-300"
-                sizes="(max-width: 768px) 45vw, 30vw"
-                priority
+                sizes="150px"
               />
             </div>
-            <div className="flex justify-between items-end">
+            <div className="flex flex-col justify-between flex-1 py-0.5">
               <div>
-                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
-                  Classic
+                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-100/80 text-emerald-800 text-[10px] font-black uppercase tracking-wider mb-1.5">
+                  XeLaTeX · Matrimonial
+                </div>
+                <h3 className="font-black text-sm sm:text-base text-zinc-950 uppercase tracking-wide">
+                  Marriage Resume (Biodata)
                 </h3>
-                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
-                  Two-Column · Photo
+                <p className="text-[11px] sm:text-xs text-zinc-500 font-medium mt-1 leading-relaxed">
+                  Tailored two-column matrimonial biodata format with personal details, religious background, education, career, family background, lifestyle, partner expectations, and XeLaTeX typographic refinement.
                 </p>
               </div>
-              <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
-                Select →
-              </span>
+              <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-zinc-100">
+                <span className="text-[10px] sm:text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+                  Two-Column · Photo · Pure LaTeX
+                </span>
+                <span className="text-xs font-bold text-zinc-400 group-hover:text-emerald-800 transition flex items-center gap-1">
+                  Select Template →
+                </span>
+              </div>
             </div>
           </button>
         </div>
 
-        <div className="mt-6 pt-4 border-t border-zinc-150 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="mt-4 pt-3 border-t border-zinc-150 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs text-zinc-450 font-semibold uppercase tracking-wider">
             Looking for more templates?
           </p>
@@ -290,12 +334,14 @@ export default function PresumePage() {
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState<'landing' | 'builder'>('landing');
   const [showModal, setShowModal] = useState(false);
+  const [activeTemplate, setActiveTemplate] = useState<'programmer' | 'classic' | 'biodata'>('programmer');
   const [cvData, setCvData] = useState<CVData>(programmerDefaultCVData);
+  const [biodataData, setBiodataData] = useState<BiodataData>(defaultBiodataData);
   // Mobile builder tab
   const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form');
 
   const typedMotto = useLIFOTypewriter(50, 1400, 28);
-  const latexOutput = generateLatex(cvData);
+  const latexOutput = activeTemplate === 'biodata' ? generateBiodataLatex(biodataData) : generateLatex(cvData);
   const [customLatex, setCustomLatex] = useState<string | null>(null);
   const [showContribute, setShowContribute] = useState(false);
   const [showBrowser, setShowBrowser] = useState(false);
@@ -323,8 +369,11 @@ export default function PresumePage() {
     }
   };
 
-  const startBuilding = (type: 'programmer' | 'classic') => {
-    setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
+  const startBuilding = (type: 'programmer' | 'classic' | 'biodata') => {
+    setActiveTemplate(type);
+    if (type === 'programmer' || type === 'classic') {
+      setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
+    }
     setCustomLatex(null);
     setShowModal(false);
     setMobileTab('form');
@@ -337,31 +386,39 @@ export default function PresumePage() {
     setCustomLatex(null);
   };
 
-  const handleTemplateSwitch = (type: 'programmer' | 'classic') => {
+  const handleTemplateSwitch = (type: 'programmer' | 'classic' | 'biodata') => {
     setCustomLatex(null);
-    const basePreset = type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData;
-    setCvData(prev => ({
-      ...basePreset,
-      themeColor: prev.themeColor,
-      personalInfo: {
-        ...basePreset.personalInfo,
-        firstName: prev.personalInfo.firstName || basePreset.personalInfo.firstName,
-        lastName: prev.personalInfo.lastName || basePreset.personalInfo.lastName,
-        email: prev.personalInfo.email || basePreset.personalInfo.email,
-        phone: prev.personalInfo.phone || basePreset.personalInfo.phone,
-        linkedin: prev.personalInfo.linkedin || basePreset.personalInfo.linkedin,
-        github: prev.personalInfo.github || basePreset.personalInfo.github,
-        location: prev.personalInfo.location || basePreset.personalInfo.location,
-      }
-    }));
+    setActiveTemplate(type);
+    if (type === 'programmer' || type === 'classic') {
+      const basePreset = type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData;
+      setCvData(prev => ({
+        ...basePreset,
+        themeColor: prev.themeColor,
+        personalInfo: {
+          ...basePreset.personalInfo,
+          firstName: prev.personalInfo.firstName || basePreset.personalInfo.firstName,
+          lastName: prev.personalInfo.lastName || basePreset.personalInfo.lastName,
+          email: prev.personalInfo.email || basePreset.personalInfo.email,
+          phone: prev.personalInfo.phone || basePreset.personalInfo.phone,
+          linkedin: prev.personalInfo.linkedin || basePreset.personalInfo.linkedin,
+          github: prev.personalInfo.github || basePreset.personalInfo.github,
+          location: prev.personalInfo.location || basePreset.personalInfo.location,
+        }
+      }));
+    }
   };
 
   const downloadTeX = () => {
-    const blob = new Blob([customLatex !== null ? customLatex : latexOutput], { type: 'text/plain' });
+    const isBio = activeTemplate === 'biodata';
+    const activeTex = customLatex !== null ? customLatex : (isBio ? generateBiodataLatex(biodataData) : generateLatex(cvData));
+    const blob = new Blob([activeTex], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${cvData.personalInfo.firstName || 'My'}_${cvData.personalInfo.lastName || 'Resume'}.tex`;
+    const filename = isBio
+      ? `${(biodataData.personalInfo.fullName || 'Marriage').replace(/\s+/g, '_')}_Biodata.tex`
+      : `${cvData.personalInfo.firstName || 'My'}_${cvData.personalInfo.lastName || 'Resume'}.tex`;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -428,7 +485,7 @@ export default function PresumePage() {
                 <div className="hidden sm:flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
                   <button
                     onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${cvData.template === 'programmer'
+                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'programmer'
                       ? 'bg-white text-zinc-950 shadow-sm'
                       : 'text-zinc-500 hover:text-zinc-800'
                       }`}
@@ -437,21 +494,30 @@ export default function PresumePage() {
                   </button>
                   <button
                     onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${cvData.template === 'classic'
+                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'classic'
                       ? 'bg-white text-zinc-950 shadow-sm'
                       : 'text-zinc-500 hover:text-zinc-800'
                       }`}
                   >
                     Classic
                   </button>
+                  <button
+                    onClick={() => handleTemplateSwitch('biodata')}
+                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'biodata'
+                      ? 'bg-white text-zinc-950 shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-800'
+                      }`}
+                  >
+                    Marriage
+                  </button>
                 </div>
 
                 {/* Portfolio Website Builder — icon only on xs */}
                 <button
                   onClick={handleGeneratePortfolio}
-                  disabled={generatingPortfolio}
-                  className="px-2 sm:px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-800 rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition border border-zinc-200 shadow-sm cursor-pointer disabled:opacity-50"
-                  title="Generate Portfolio Website (.zip)"
+                  disabled={generatingPortfolio || activeTemplate === 'biodata'}
+                  className="px-2 sm:px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-800 rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition border border-zinc-200 shadow-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                  title={activeTemplate === 'biodata' ? 'Portfolio builder is for career resumes' : 'Generate Portfolio Website (.zip)'}
                 >
                   <Globe size={14} className={generatingPortfolio ? 'animate-spin' : ''} />
                   <span className="hidden sm:inline">
@@ -523,9 +589,9 @@ export default function PresumePage() {
               </button>
 
               {/* Subtle template preview strip */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-2 sm:mt-4 max-w-[280px] sm:max-w-sm w-full opacity-70 hover:opacity-100 transition-opacity">
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-4 mt-2 sm:mt-4 max-w-[340px] sm:max-w-md w-full opacity-75 hover:opacity-100 transition-opacity">
                 <button
-                  onClick={() => setShowModal(true)}
+                  onClick={() => startBuilding('programmer')}
                   className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
                 >
                   <Image
@@ -533,14 +599,14 @@ export default function PresumePage() {
                     alt="Programmer Template Preview"
                     fill
                     className="object-cover group-hover:scale-[1.03] transition duration-300"
-                    sizes="200px"
+                    sizes="150px"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1.5 text-[9px] sm:text-[10px] font-bold text-zinc-600 text-center uppercase tracking-wider">
+                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider">
                     Programmer
                   </div>
                 </button>
                 <button
-                  onClick={() => setShowModal(true)}
+                  onClick={() => startBuilding('classic')}
                   className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
                 >
                   <Image
@@ -548,10 +614,25 @@ export default function PresumePage() {
                     alt="Classic Template Preview"
                     fill
                     className="object-cover group-hover:scale-[1.03] transition duration-300"
-                    sizes="200px"
+                    sizes="150px"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1.5 text-[9px] sm:text-[10px] font-bold text-zinc-600 text-center uppercase tracking-wider">
+                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider">
                     Classic
+                  </div>
+                </button>
+                <button
+                  onClick={() => startBuilding('biodata')}
+                  className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
+                >
+                  <Image
+                    src="/templates/marriage.png"
+                    alt="Marriage Biodata Preview"
+                    fill
+                    className="object-cover group-hover:scale-[1.03] transition duration-300"
+                    sizes="150px"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider">
+                    Marriage
                   </div>
                 </button>
               </div>
@@ -573,7 +654,7 @@ export default function PresumePage() {
                 <div className="lg:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
                   <button
                     onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${cvData.template === 'programmer'
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'programmer'
                       ? 'bg-white text-zinc-950 shadow-sm'
                       : 'text-zinc-500'
                       }`}
@@ -582,12 +663,21 @@ export default function PresumePage() {
                   </button>
                   <button
                     onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${cvData.template === 'classic'
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'classic'
                       ? 'bg-white text-zinc-950 shadow-sm'
                       : 'text-zinc-500'
                       }`}
                   >
                     Classic
+                  </button>
+                  <button
+                    onClick={() => handleTemplateSwitch('biodata')}
+                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'biodata'
+                      ? 'bg-white text-zinc-950 shadow-sm'
+                      : 'text-zinc-500'
+                      }`}
+                  >
+                    Marriage
                   </button>
                 </div>
               </div>
@@ -600,7 +690,11 @@ export default function PresumePage() {
                   className={`lg:col-span-6 space-y-6 no-print lg:max-h-[140vh] lg:overflow-y-auto lg:pr-1 ${mobileTab === 'form' ? 'block' : 'hidden lg:block'
                     }`}
                 >
-                  <CVForm cvData={cvData} setCvData={setCvData} />
+                  {activeTemplate === 'biodata' ? (
+                    <BiodataForm data={biodataData} setData={setBiodataData} />
+                  ) : (
+                    <CVForm cvData={cvData} setCvData={setCvData} />
+                  )}
                 </div>
 
                 {/* Preview pane */}
@@ -614,13 +708,17 @@ export default function PresumePage() {
                     latexOutput={latexOutput}
                     customLatex={customLatex}
                     setCustomLatex={setCustomLatex}
+                    templateType={activeTemplate}
+                    biodataData={biodataData}
                   />
                 </div>
               </div>
 
               {/* Print-only full template */}
               <div className="hidden print:block w-full">
-                {cvData.template === 'classic' ? (
+                {activeTemplate === 'biodata' ? (
+                  <MarriageBiodataCV data={biodataData} />
+                ) : cvData.template === 'classic' ? (
                   <ClassicCV cvData={cvData} />
                 ) : (
                   <ProgrammerCV cvData={cvData} />

@@ -56,3 +56,6 @@ temp-*.tex
 
 # OS
 Thumbs.db
+
+# User-specific LaTeX templates (may contain personal information)
+/templates/

@@ -264,3 +264,185 @@ export const classicDefaultCVData: CVData = {
 
 // Default export can be programmer as initial fallback
 export const defaultCVData: CVData = programmerDefaultCVData;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BIODATA TYPES — Marriage Biodata
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface BiodataEducationEntry {
+  degree: string;
+  institution: string;
+  dates: string;
+  thesis?: string;
+}
+
+export interface BiodataPersonalInfo {
+  fullName: string;
+  dateOfBirth: string;
+  age: string;
+  height: string;
+  bloodGroup: string;
+  maritalStatus: string;
+  nationality: string;
+  homeDistrict: string;
+  currentResidence: string;
+  photo: string; // base64
+}
+
+export interface BiodataContactPerson {
+  name: string;
+  relation: string;
+  phone: string;
+}
+
+export interface BiodataOnlineLink {
+  platform: string;
+  url: string;
+  displayUrl: string;
+}
+
+export interface BiodataCustomSection {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export interface BiodataData {
+  template: 'biodata';
+
+  // Core identity
+  personalInfo: BiodataPersonalInfo;
+
+  // Required sections
+  religion: string;
+  religiousPractice: string;
+  education: BiodataEducationEntry[];
+  aboutMe: string;
+
+  // Career
+  careerExperience: string;   // free text (job title, org, dates)
+  careerCurrentStatus: string;
+
+  // Family
+  fatherDetails: string;
+  motherDetails: string;
+  siblingDetails: string;
+
+  // Lifestyle & Partner
+  lifestyleInterests: string;
+  lifestyleDescription: string;
+  lifestyleHabits: string;
+  lifestyleApproach: string;
+
+  partnerExpectationsText: string;
+  partnerEducation: string;
+  partnerLocation: string;
+  partnerCareer: string;
+
+  // Family values
+  familyValues: string;
+
+  // Optional sections
+  onlinePresence: BiodataOnlineLink[];
+  contactPersons: BiodataContactPerson[];
+
+  // User-added custom sections
+  customSections: BiodataCustomSection[];
+
+  // Section visibility
+  enabledSections: {
+    religion: boolean;
+    career: boolean;
+    family: boolean;
+    aboutMe: boolean;
+    lifestyle: boolean;
+    partnerExpectations: boolean;
+    familyValues: boolean;
+    onlinePresence: boolean;    // optional
+    contactPersons: boolean;   // optional
+  };
+}
+
+export const defaultBiodataData: BiodataData = {
+  template: 'biodata',
+
+  personalInfo: {
+    fullName: 'Your Full Name',
+    dateOfBirth: '23 October 2002',
+    age: '23 years',
+    height: "5'3\"",
+    bloodGroup: 'O+',
+    maritalStatus: 'Unmarried',
+    nationality: 'Bangladeshi',
+    homeDistrict: 'Your Home District',
+    currentResidence: 'Your City, Division',
+    photo: '',
+  },
+
+  religion: 'Islam (Sunni)',
+  religiousPractice: "Observes the five daily prayers and regularly recites the Qur'an. Has a strong interest in learning about Islam, the Seerah of the Prophet (PBUH), and Islamic history.",
+
+  education: [
+    {
+      degree: 'B.Sc. (Engg.) in Software Engineering',
+      institution: 'Your University Name',
+      dates: '2022 – 2026',
+      thesis: 'Your thesis or capstone project title here.',
+    },
+    {
+      degree: 'Higher Secondary School Certificate (HSC)',
+      institution: 'Your College Name',
+      dates: '2021',
+    },
+    {
+      degree: 'Secondary School Certificate (SSC)',
+      institution: 'Your School Name',
+      dates: '2019',
+    },
+  ],
+
+  aboutMe: 'I am a graduate with a strong interest in technology and building practical things. I enjoy learning through projects, writing, reading, exploring ideas, and travelling. I tend to be quiet and reflective, and generally prefer a simple and peaceful lifestyle, while also enjoying frequent outings and discovering new places. I value mutual respect, personal growth, thoughtful communication, and a warm family environment.',
+
+  careerExperience: 'Your Job Title\nYour Company Name, City\nMonth Year – Month Year',
+  careerCurrentStatus: 'Recent graduate; currently exploring opportunities in software engineering, AI/ML, and intelligent systems.',
+
+  fatherDetails: "Father's Full Name\nOccupation and Organization",
+  motherDetails: "Mother's Full Name\nOccupation",
+  siblingDetails: 'Brief description of sibling(s), e.g. one younger sister, currently pursuing undergraduate education.',
+
+  lifestyleInterests: 'Technology, writing, reading, exploring new places.',
+  lifestyleDescription: 'Prefers a quiet and simple lifestyle. Enjoys frequent outings to both natural and urban destinations.',
+  lifestyleHabits: 'Non-smoker; does not consume alcohol.',
+  lifestyleApproach: 'Prefers solving problems through friendly communication and thoughtful analysis.',
+
+  partnerExpectationsText: 'Looking for someone with good character, compatible religious and lifestyle values, and a respectful and communicative nature. I value mutual respect, honesty, and a willingness to build a life together.',
+  partnerEducation: 'HSC completed; preferably currently pursuing or having completed undergraduate education.',
+  partnerLocation: 'Open to any district.',
+  partnerCareer: 'Flexible; open to discussing future career plans together.',
+
+  familyValues: 'Values a close, respectful family environment while believing that husband and wife should also have space to grow individually and make important decisions through mutual understanding.',
+
+  onlinePresence: [
+    { platform: 'Facebook', url: 'https://facebook.com/yourprofile', displayUrl: 'facebook.com/yourprofile' },
+    { platform: 'GitHub', url: 'https://github.com/yourusername', displayUrl: 'github.com/yourusername' },
+  ],
+
+  contactPersons: [
+    { name: "Father's Name", relation: 'Father', phone: '+880-XXXXXXXXXX' },
+    { name: "Mother's Name", relation: 'Mother', phone: '+880-XXXXXXXXXX' },
+  ],
+
+  customSections: [],
+
+  enabledSections: {
+    religion: true,
+    career: true,
+    family: true,
+    aboutMe: true,
+    lifestyle: true,
+    partnerExpectations: true,
+    familyValues: true,
+    onlinePresence: true,
+    contactPersons: true,
+  },
+};

@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { CVData } from '@/lib/cv-types';
 import ClassicCV from './templates/ClassicCV';
 import ProgrammerCV from './templates/ProgrammerCV';
+import MarriageBiodataCV from './templates/MarriageBiodataCV';
 import { Eye, Code, Copy, Check, ExternalLink, RotateCcw } from 'lucide-react';
-
+import { BiodataData } from '@/lib/cv-types';
 
 interface Props {
   cvData: CVData;
@@ -14,6 +15,8 @@ interface Props {
   latexOutput: string;
   customLatex: string | null;
   setCustomLatex: (val: string | null) => void;
+  templateType?: 'programmer' | 'classic' | 'biodata';
+  biodataData?: BiodataData;
 }
 
 export default function CvPreview({
@@ -22,6 +25,8 @@ export default function CvPreview({
   latexOutput,
   customLatex,
   setCustomLatex,
+  templateType = 'programmer',
+  biodataData,
 }: Props) {
   const [viewMode, setViewMode] = useState<'visual' | 'latex'>('visual');
   const [copied, setCopied] = useState(false);
@@ -140,32 +145,45 @@ export default function CvPreview({
       {/* Toolbar row 2 — theme color toggle (visual mode only) */}
       {viewMode === 'visual' && (
         <div className="flex flex-wrap items-center gap-2 px-3 sm:px-4 py-2 border-b border-zinc-100 bg-white no-print">
-          <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Accent</span>
-          <div className="flex bg-zinc-100 p-0.5 rounded-[7px] border border-zinc-200">
-            <button
-              onClick={() => setTheme('black')}
-              className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'black'
-                  ? 'bg-zinc-950 text-white shadow-sm'
-                  : 'text-zinc-500 hover:text-zinc-800'
-                }`}
-            >
-              <span className="w-2 h-2 rounded-full bg-zinc-950 inline-block border border-zinc-700" />
-              Black
-            </button>
-            <button
-              onClick={() => setTheme('blue')}
-              className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'blue'
-                  ? 'bg-zinc-950 text-white shadow-sm'
-                  : 'text-zinc-500 hover:text-zinc-800'
-                }`}
-            >
-              <span className="w-2 h-2 rounded-full bg-[#1A3A5C] inline-block border border-blue-900" />
-              Navy
-            </button>
-          </div>
-          <span className="text-[10px] text-zinc-400 font-medium hidden sm:block">
-            Also changes LaTeX output colors
-          </span>
+          {templateType === 'biodata' ? (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Theme</span>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-zinc-50 border border-zinc-200 text-xs font-semibold text-zinc-800">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#3F5F49] inline-block" />
+                <span className="text-[11px] font-bold text-[#3F5F49]">Forest Green Accent</span>
+                <span className="text-[10px] text-zinc-400 ml-1">· Warm Ivory Page (#FCFBF8)</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Accent</span>
+              <div className="flex bg-zinc-100 p-0.5 rounded-[7px] border border-zinc-200">
+                <button
+                  onClick={() => setTheme('black')}
+                  className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'black'
+                      ? 'bg-zinc-950 text-white shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-800'
+                    }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-zinc-950 inline-block border border-zinc-700" />
+                  Black
+                </button>
+                <button
+                  onClick={() => setTheme('blue')}
+                  className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'blue'
+                      ? 'bg-zinc-950 text-white shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-800'
+                    }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#1A3A5C] inline-block border border-blue-900" />
+                  Navy
+                </button>
+              </div>
+              <span className="text-[10px] text-zinc-400 font-medium hidden sm:block">
+                Also changes LaTeX output colors
+              </span>
+            </>
+          )}
         </div>
       )}
 
@@ -175,7 +193,9 @@ export default function CvPreview({
           /* Scale the A4 preview down on small screens so it fits without horizontal scroll */
           <div className="preview-scale-wrapper w-full flex justify-center">
             <div className="w-full max-w-[210mm] shadow-2xl rounded-[4px] overflow-hidden bg-white origin-top preview-cv">
-              {cvData.template === 'classic' ? (
+              {templateType === 'biodata' && biodataData ? (
+                <MarriageBiodataCV data={biodataData} />
+              ) : cvData.template === 'classic' ? (
                 <ClassicCV cvData={cvData} />
               ) : (
                 <ProgrammerCV cvData={cvData} />
