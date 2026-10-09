@@ -50,7 +50,7 @@ export default function PersonalInfoForm({ cvData, setCvData }: Props) {
     <div className="bg-white p-6 rounded-[10px] border border-zinc-200 space-y-6">
       <h3 className="text-base font-bold tracking-tight">Personal Information</h3>
 
-      {/* Photo upload — Classic template only */}
+      {/* Photo upload: Classic template only */}
       {template === 'classic' && showPhoto && (
         <div className="flex items-center gap-5 pb-2">
           <div className="relative w-20 h-20 rounded-full overflow-hidden border border-zinc-200 bg-zinc-100 flex items-center justify-center shrink-0">

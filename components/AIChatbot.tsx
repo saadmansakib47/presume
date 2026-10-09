@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, Sparkles, User, Bot, CornerDownLeft } from 'lucide-react';
+import { MessageSquare, X, Send, User, Bot, CornerDownLeft } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -14,6 +14,12 @@ interface Message {
 interface Props {
   latexCode: string;
   onUpdateLatex?: (newLatex: string) => void;
+}
+
+let messageSeq = 0;
+function getNextMessageId(prefix: string): string {
+  messageSeq += 1;
+  return `${prefix}-${messageSeq}`;
 }
 
 export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
@@ -39,7 +45,7 @@ export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
     if (!textToSend.trim()) return;
 
     const userMsg: Message = {
-      id: Math.random().toString(),
+      id: getNextMessageId('user'),
       sender: 'user',
       text: textToSend,
       timestamp: new Date(),
@@ -69,7 +75,7 @@ export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
       const result = await response.json();
 
       const assistantMsg: Message = {
-        id: Math.random().toString(),
+        id: getNextMessageId('assistant'),
         sender: 'assistant',
         text: result.message || "I processed the request but couldn't get a description message.",
         timestamp: new Date(),
@@ -79,12 +85,13 @@ export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
       if (result.updatedLatex && onUpdateLatex) {
         onUpdateLatex(result.updatedLatex);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Chat API Error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       const errorMsg: Message = {
-        id: Math.random().toString(),
+        id: getNextMessageId('error'),
         sender: 'assistant',
-        text: `Error: ${err.message || 'Failed to get a response. Please verify that GEMINI_API_KEY or OPENROUTER_API_KEY is configured in your environment.'}`,
+        text: `Error: ${errorMessage || 'Failed to get a response. Please verify that GEMINI_API_KEY or OPENROUTER_API_KEY is configured in your environment.'}`,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -116,7 +123,7 @@ export default function AIChatbot({ latexCode, onUpdateLatex }: Props) {
           <div className="bg-zinc-950 text-white px-4 py-3.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-white">
-                <Sparkles size={14} className="text-zinc-100" />
+                <Bot size={14} className="text-zinc-100" />
               </div>
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-wider">AI Assistant</h3>

@@ -25,7 +25,7 @@
         {
           "degree": "M.Sc. in Computer Science",
           "institution": "University of Washington",
-          "dates": "2018 — 2020",
+          "dates": "2018 - 2020",
           "gpa": "3.95 / 4.00"
         }
       ],
@@ -33,7 +33,7 @@
         {
           "title": "Backend Architect",
           "organization": "CloudScale Inc.",
-          "dates": "2021 — Present",
+          "dates": "2021 - Present",
           "description": [
             "Architected a real-time event streaming pipeline processing 10B+ daily events using Go and Kafka.",
             "Reduced AWS cloud compute expenditures by 28% through custom Kubernetes auto-scaling policies.",
@@ -43,7 +43,7 @@
       ],
       "projects": [
         {
-          "title": "HyperKV — Distributed Key-Value Store",
+          "title": "HyperKV: Distributed Key-Value Store",
           "dates": "2024",
           "description": [
             "Developed an LSM-tree backed distributed key-value store using Raft consensus in Rust.",
@@ -56,7 +56,7 @@
         { "category": "Cloud & Infra", "skills": ["AWS", "Docker", "Kubernetes", "Kafka", "gRPC", "Linux"] }
       ],
       "achievements": [
-        "Speaker at GoCon Seattle 2023 — 'Scaling Consensus Protocols'",
+        "Speaker at GoCon Seattle 2023: 'Scaling Consensus Protocols'",
         "Main contributor to open-source Raft implementations"
       ],
       "languages": ["English (Native)", "German (Professional)"],
@@ -105,7 +105,7 @@
         {
           "degree": "MBA in Strategic Management",
           "institution": "Columbia Business School",
-          "dates": "2019 — 2021",
+          "dates": "2019 - 2021",
           "gpa": "3.85 / 4.00"
         }
       ],
@@ -113,7 +113,7 @@
         {
           "title": "Senior Consultant",
           "organization": "Apex Advisory Group",
-          "dates": "2021 — Present",
+          "dates": "2021 - Present",
           "description": [
             "Formulated a post-merger integration plan for a $1.2B healthcare transaction, realizing $45M in synergies.",
             "Led operational restructuring for a major logistics provider, improving EBITDA margin by 340 bps."
@@ -122,7 +122,7 @@
       ],
       "projects": [
         {
-          "title": "Market Entry Analysis — Fintech Sector",
+          "title": "Market Entry Analysis: Fintech Sector",
           "dates": "2023",
           "description": [
             "Conducted a comprehensive target market validation and regulatory roadmap for a European neobank expanding into the US."
@@ -134,7 +134,7 @@
         { "category": "Tools", "skills": ["Excel (VBA)", "PowerPoint", "Tableau", "Think-Cell"] }
       ],
       "achievements": [
-        "Consultant of the Year — Apex Advisory Group, 2024",
+        "Consultant of the Year, Apex Advisory Group, 2024",
         "Beta Gamma Sigma National Honor Society"
       ],
       "languages": ["English (Native)", "French (Fluent)", "Mandarin (Conversational)"],

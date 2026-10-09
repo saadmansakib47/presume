@@ -186,7 +186,7 @@ export default function BasicSections({ cvData, setCvData }: Props) {
                   </div>
                   <div className="space-y-1 md:col-span-2">
                     <label className={LABEL}>Dates / Duration</label>
-                    <input type="text" placeholder="e.g. June 2024 — Present" value={exp.dates}
+                    <input type="text" placeholder="e.g. June 2024 - Present" value={exp.dates}
                       onChange={e => updateExperience(i, 'dates', e.target.value)} className={INPUT} />
                   </div>
                   <div className="space-y-1 md:col-span-2">
@@ -237,7 +237,7 @@ export default function BasicSections({ cvData, setCvData }: Props) {
                   </div>
                   <div className="space-y-1">
                     <label className={LABEL}>Dates / Duration</label>
-                    <input type="text" placeholder="e.g. 2021 — 2025" value={edu.dates}
+                    <input type="text" placeholder="e.g. 2021 - 2025" value={edu.dates}
                       onChange={e => updateEducation(i, 'dates', e.target.value)} className={INPUT} />
                   </div>
                   <div className="space-y-1">
@@ -348,7 +348,7 @@ export default function BasicSections({ cvData, setCvData }: Props) {
           <div className="space-y-2">
             {cvData.achievements.map((ach, i) => (
               <div key={i} className="flex gap-2 items-center">
-                <input type="text" placeholder="e.g. Dean's Award — University, 2024" value={ach}
+                <input type="text" placeholder="e.g. Dean's Award, University, 2024" value={ach}
                   onChange={e => updateAchievement(i, e.target.value)} className={INLINE_INPUT} />
                 <button onClick={() => removeAchievement(i)} className={DEL_INLINE}>
                   <Trash size={15} />
@@ -372,7 +372,7 @@ export default function BasicSections({ cvData, setCvData }: Props) {
           <div className="space-y-2">
             {cvData.languages.map((lang, i) => (
               <div key={i} className="flex gap-2 items-center">
-                <input type="text" placeholder="e.g. Bengali — Native" value={lang}
+                <input type="text" placeholder="e.g. Bengali: Native" value={lang}
                   onChange={e => updateLanguage(i, e.target.value)} className={INLINE_INPUT} />
                 <button onClick={() => removeLanguage(i)} className={DEL_INLINE}>
                   <Trash size={15} />

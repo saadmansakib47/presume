@@ -28,6 +28,7 @@ import {
   Eye,
   PencilLine,
   Globe,
+  Home,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -168,16 +169,16 @@ function TemplateModal({
             Choose a Template
           </h2>
           <p className="text-sm text-zinc-500 font-medium">
-            Pick your format — professional resume or matrimonial biodata.
+            Pick your format: professional resume or matrimonial biodata.
           </p>
         </div>
 
-        <div className="overflow-y-auto space-y-4 pr-1">
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {/* Programmer Card */}
+        <div className="overflow-y-auto pr-1">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5">
+            {/* Programmer Card (Row 1, Col 1) */}
             <button
               onClick={() => onSelect('programmer')}
-              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-3.5 flex flex-col gap-2.5 sm:gap-3 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
             >
               <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
                 <Image
@@ -189,25 +190,20 @@ function TemplateModal({
                   priority
                 />
               </div>
-              <div className="flex justify-between items-end">
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
-                    Programmer
-                  </h3>
-                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
-                    Single Column · Tech
-                  </p>
-                </div>
-                <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
-                  Select →
-                </span>
+              <div>
+                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
+                  Programmer
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                  Single Column
+                </p>
               </div>
             </button>
 
-            {/* Classic Card */}
+            {/* Classic Card (Row 1, Col 2) */}
             <button
               onClick={() => onSelect('classic')}
-              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-3.5 flex flex-col gap-2.5 sm:gap-3 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
             >
               <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
                 <Image
@@ -219,58 +215,59 @@ function TemplateModal({
                   priority
                 />
               </div>
-              <div className="flex justify-between items-end">
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
-                    Classic
-                  </h3>
-                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
-                    Two-Column · Photo
-                  </p>
-                </div>
-                <span className="text-xs font-bold text-zinc-300 group-hover:text-zinc-900 transition hidden sm:block">
-                  Select →
-                </span>
-              </div>
-            </button>
-          </div>
-
-          {/* Marriage Resume Card below Programmer and Classic */}
-          <button
-            onClick={() => onSelect('biodata')}
-            className="group text-left w-full bg-gradient-to-r from-emerald-50/40 via-white to-zinc-50 border border-zinc-200 hover:border-emerald-800/80 rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row gap-3.5 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-          >
-            <div className="relative aspect-[3/4] w-28 sm:w-32 rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200 shrink-0 mx-auto sm:mx-0">
-              <Image
-                src="/templates/marriage.png"
-                alt="Marriage Resume Template"
-                fill
-                className="object-cover group-hover:scale-[1.02] transition duration-300"
-                sizes="150px"
-              />
-            </div>
-            <div className="flex flex-col justify-between flex-1 py-0.5">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-100/80 text-emerald-800 text-[10px] font-black uppercase tracking-wider mb-1.5">
-                  XeLaTeX · Matrimonial
-                </div>
-                <h3 className="font-black text-sm sm:text-base text-zinc-950 uppercase tracking-wide">
-                  Marriage Resume (Biodata)
+                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
+                  Classic
                 </h3>
-                <p className="text-[11px] sm:text-xs text-zinc-500 font-medium mt-1 leading-relaxed">
-                  Tailored two-column matrimonial biodata format with personal details, religious background, education, career, family background, lifestyle, partner expectations, and XeLaTeX typographic refinement.
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                  Two-Column
                 </p>
               </div>
-              <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-zinc-100">
-                <span className="text-[10px] sm:text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                  Two-Column · Photo · Pure LaTeX
+            </button>
+
+            {/* Marriage Resume Card (Row 2, Col 1 - below programmer) */}
+            <button
+              onClick={() => onSelect('biodata')}
+              className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            >
+              <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
+                <Image
+                  src="/templates/marriage.png"
+                  alt="Marriage Resume Template"
+                  fill
+                  className="object-cover group-hover:scale-[1.02] transition duration-300"
+                  sizes="(max-width: 768px) 45vw, 30vw"
+                  priority
+                />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
+                  Marriage Resume
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                  Two-Column
+                </p>
+              </div>
+            </button>
+
+            {/* Coming Soon Card (Row 2, Col 2 - below classic) */}
+            <div className="text-left bg-zinc-50 border border-dashed border-zinc-200 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 opacity-75 select-none">
+              <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100/70 border border-dashed border-zinc-200 flex flex-col items-center justify-center p-4 text-center">
+                <span className="text-[11px] font-extrabold text-zinc-400 uppercase tracking-widest">
+                  Coming Soon
                 </span>
-                <span className="text-xs font-bold text-zinc-400 group-hover:text-emerald-800 transition flex items-center gap-1">
-                  Select Template →
-                </span>
+                <p className="text-[10px] text-zinc-400 mt-1">In Development</p>
+              </div>
+              <div>
+                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-400 uppercase tracking-wide">
+                  More Templates
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
+                  More coming soon...
+                </p>
               </div>
             </div>
-          </button>
+          </div>
         </div>
 
         <div className="mt-4 pt-3 border-t border-zinc-150 flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -481,38 +478,40 @@ export default function PresumePage() {
             {/* Builder header actions */}
             {step === 'builder' && (
               <div className="flex items-center gap-1.5 sm:gap-2.5">
-                {/* Template switcher — hidden on xs, visible sm+ */}
-                <div className="hidden sm:flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
+                {/* Template switcher or Home button */}
+                {activeTemplate === 'biodata' ? (
                   <button
-                    onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'programmer'
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-500 hover:text-zinc-800'
-                      }`}
+                    onClick={() => setShowModal(true)}
+                    className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold transition border border-zinc-200 shadow-sm cursor-pointer"
+                    title="Choose a Template"
                   >
-                    Programmer
+                    <Home size={14} />
+                    <span>Home</span>
                   </button>
-                  <button
-                    onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'classic'
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-500 hover:text-zinc-800'
-                      }`}
-                  >
-                    Classic
-                  </button>
-                  <button
-                    onClick={() => handleTemplateSwitch('biodata')}
-                    className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'biodata'
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-500 hover:text-zinc-800'
-                      }`}
-                  >
-                    Marriage
-                  </button>
-                </div>
+                ) : (
+                  <div className="hidden sm:flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
+                    <button
+                      onClick={() => handleTemplateSwitch('programmer')}
+                      className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'programmer'
+                        ? 'bg-white text-zinc-950 shadow-sm'
+                        : 'text-zinc-500 hover:text-zinc-800'
+                        }`}
+                    >
+                      Programmer
+                    </button>
+                    <button
+                      onClick={() => handleTemplateSwitch('classic')}
+                      className={`px-3 py-1 rounded-[6px] text-xs font-bold transition cursor-pointer ${activeTemplate === 'classic'
+                        ? 'bg-white text-zinc-950 shadow-sm'
+                        : 'text-zinc-500 hover:text-zinc-800'
+                        }`}
+                    >
+                      Classic
+                    </button>
+                  </div>
+                )}
 
-                {/* Portfolio Website Builder — icon only on xs */}
+                {/* Portfolio Website Builder: icon only on xs */}
                 <button
                   onClick={handleGeneratePortfolio}
                   disabled={generatingPortfolio || activeTemplate === 'biodata'}
@@ -525,7 +524,7 @@ export default function PresumePage() {
                   </span>
                 </button>
 
-                {/* LaTeX download — icon only on xs */}
+                {/* LaTeX download: icon only on xs */}
                 <button
                   onClick={downloadTeX}
                   className="px-2 sm:px-3.5 py-1.5 bg-white hover:bg-zinc-100 text-zinc-800 rounded-[10px] text-xs font-bold flex items-center gap-1.5 transition border border-zinc-200 shadow-sm cursor-pointer"
@@ -650,36 +649,36 @@ export default function PresumePage() {
                   <ChevronLeft size={16} /> Back
                 </button>
 
-                {/* Mobile template switcher (visible on xs/sm, hidden on lg+) */}
-                <div className="lg:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
+                {/* Mobile template switcher or Home button */}
+                {activeTemplate === 'biodata' ? (
                   <button
-                    onClick={() => handleTemplateSwitch('programmer')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'programmer'
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-500'
-                      }`}
+                    onClick={() => setShowModal(true)}
+                    className="lg:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] text-[10px] font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 transition cursor-pointer"
                   >
-                    Programmer
+                    <Home size={12} /> Home
                   </button>
-                  <button
-                    onClick={() => handleTemplateSwitch('classic')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'classic'
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-500'
-                      }`}
-                  >
-                    Classic
-                  </button>
-                  <button
-                    onClick={() => handleTemplateSwitch('biodata')}
-                    className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'biodata'
-                      ? 'bg-white text-zinc-950 shadow-sm'
-                      : 'text-zinc-500'
-                      }`}
-                  >
-                    Marriage
-                  </button>
-                </div>
+                ) : (
+                  <div className="lg:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
+                    <button
+                      onClick={() => handleTemplateSwitch('programmer')}
+                      className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'programmer'
+                        ? 'bg-white text-zinc-950 shadow-sm'
+                        : 'text-zinc-500'
+                        }`}
+                    >
+                      Programmer
+                    </button>
+                    <button
+                      onClick={() => handleTemplateSwitch('classic')}
+                      className={`px-2.5 py-1 rounded-[6px] text-[10px] font-bold transition cursor-pointer ${activeTemplate === 'classic'
+                        ? 'bg-white text-zinc-950 shadow-sm'
+                        : 'text-zinc-500'
+                        }`}
+                    >
+                      Classic
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Desktop: side-by-side grid */}
@@ -731,7 +730,7 @@ export default function PresumePage() {
         {/* ── FOOTER ───────────────────────────────────────────────────────── */}
         <footer className="border-t border-zinc-200 bg-white py-5 text-center no-print flex flex-col sm:flex-row justify-between items-center px-6 max-w-7xl mx-auto w-full gap-3">
           <p className="text-[11px] text-zinc-400 font-semibold tracking-widest uppercase">
-            Presume — Instant LaTeX Resumes. Free. Open Source. Minimalist.
+            Presume · Instant LaTeX Resumes. Free. Open Source. Minimalist.
           </p>
           <button
             onClick={() => setShowContribute(true)}
@@ -749,7 +748,7 @@ export default function PresumePage() {
         />
       )}
 
-      {/* Mobile bottom tab bar — only shown in builder */}
+      {/* Mobile bottom tab bar: only shown in builder */}
       {step === 'builder' && (
         <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
       )}

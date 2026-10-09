@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* =========================================
-   PRESUME — Pure White B&W Design System
+   PRESUME: Pure White B&W Design System
    No dark mode. Clean, editorial, noir.
    ========================================= */
 
@@ -149,7 +149,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* =========================================
-   CV Preview — Responsive Scaling
+   CV Preview: Responsive Scaling
    On mobile the A4 preview (210mm wide) is
    scaled down to fit the screen width.
    ========================================= */
@@ -159,7 +159,7 @@ input:focus, textarea:focus, select:focus {
   transform-origin: top center;
 }
 
-/* LaTeX code panel — constrained height on mobile */
+/* LaTeX code panel: constrained height on mobile */
 .latex-code-panel {
   max-height: 60vh;
 }
@@ -195,7 +195,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* =========================================
-   Print Styles — A4 PDF
+   Print Styles: A4 PDF
    ========================================= */
 
 @media print {

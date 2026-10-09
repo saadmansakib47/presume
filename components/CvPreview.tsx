@@ -66,7 +66,7 @@ export default function CvPreview({
   return (
     <div className="bg-white rounded-[10px] border border-zinc-200 flex flex-col overflow-hidden shadow-sm">
 
-      {/* Toolbar row 1 — view mode + copy */}
+      {/* Toolbar row 1: view mode + copy */}
       <div className="flex flex-wrap justify-between items-center gap-2 bg-zinc-50 px-3 sm:px-4 py-2.5 border-b border-zinc-200 no-print">
         {/* View mode toggle */}
         <div className="flex items-center gap-3">
@@ -142,7 +142,7 @@ export default function CvPreview({
         )}
       </div>
 
-      {/* Toolbar row 2 — theme color toggle (visual mode only) */}
+      {/* Toolbar row 2: theme color toggle (visual mode only) */}
       {viewMode === 'visual' && (
         <div className="flex flex-wrap items-center gap-2 px-3 sm:px-4 py-2 border-b border-zinc-100 bg-white no-print">
           {templateType === 'biodata' ? (

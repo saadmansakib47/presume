@@ -160,7 +160,7 @@ function generateClassicLatex(cvData: CVData): string {
 \\usetikzlibrary{calc}
 \\usepackage{eso-pic}
 
-% Colors — theme: ${cvData.themeColor}
+% Colors: theme: ${cvData.themeColor}
 \\definecolor{topbg}{HTML}{${cvData.themeColor === 'blue' ? '1A3A5C' : '18181B'}} % Banner
 \\definecolor{sidebg}{HTML}{${cvData.themeColor === 'blue' ? 'EAEEF2' : 'F4F4F5'}} % Sidebar BG
 \\definecolor{sidelabel}{HTML}{${cvData.themeColor === 'blue' ? '1A3A5C' : '18181B'}}
@@ -299,10 +299,10 @@ function generateClassicLatex(cvData: CVData): string {
   if (cvData.enabledSections.languages && cvData.languages.length > 0) {
     template += `\n\\ssection{Languages}\n{\\small\\color{sidetext}%\n`;
     cvData.languages.forEach((lang, i) => {
-      // Split native / professional if contains "—" or " - "
-      const parts = lang.split(/[—\-]/);
+      // Split native / professional if contains ":" or "-" or "—"
+      const parts = lang.split(/[:—\-]/);
       if (parts.length > 1) {
-        template += `\\textbf{${escapeLaTeX(parts[0].trim())}} — ${escapeLaTeX(parts[1].trim())}${i < cvData.languages.length - 1 ? '\\\\[2pt]%\n' : '%\n'}`;
+        template += `\\textbf{${escapeLaTeX(parts[0].trim())}}: ${escapeLaTeX(parts[1].trim())}${i < cvData.languages.length - 1 ? '\\\\[2pt]%\n' : '%\n'}`;
       } else {
         template += `\\textbf{${escapeLaTeX(lang)}}${i < cvData.languages.length - 1 ? '\\\\[2pt]%\n' : '%\n'}`;
       }

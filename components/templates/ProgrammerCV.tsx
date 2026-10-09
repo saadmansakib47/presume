@@ -27,7 +27,7 @@ export default function ProgrammerCV({ cvData }: Props) {
   const accent = themeColor === 'blue' ? '#1A3A5C' : '#18181b';
 
   return (
-    <div className="print-page w-full min-h-[297mm] bg-white text-zinc-800 p-8 shadow-lg border border-zinc-200 flex flex-col font-sans text-xs relative overflow-hidden" id="cv-preview-programmer">
+    <div className="print-page w-full pb-16 print:min-h-[297mm] print:pb-0 bg-white text-zinc-800 p-8 shadow-lg border border-zinc-200 flex flex-col font-sans text-xs relative overflow-hidden" id="cv-preview-programmer">
       {/* Centered Header */}
       <div className="text-center border-b border-zinc-300 pb-4 mb-4">
         <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950 uppercase">{name || 'Your Name'}</h1>
@@ -196,7 +196,7 @@ export default function ProgrammerCV({ cvData }: Props) {
               <h2 className="text-[11px] font-extrabold uppercase tracking-wider pb-0.5" style={{ color: accent, borderBottom: `1.5px solid ${accent}` }}>Languages</h2>
               <div className="flex flex-col gap-1.5 text-zinc-700 font-medium">
                 {languages.map((lang, idx) => {
-                  const parts = lang.split(/[—\-]/);
+                  const parts = lang.split(/[:—\-]/);
                   return (
                     <div key={idx} className="flex justify-between">
                       <span>{parts[0]?.trim()}</span>

@@ -101,7 +101,7 @@ export const programmerDefaultCVData: CVData = {
     {
       degree: "B.Sc. in Computer Science and Engineering",
       institution: "University of Pennsylvania",
-      dates: "2020 — 2024",
+      dates: "2020 - 2024",
       gpa: "3.90 / 4.00"
     }
   ],
@@ -109,7 +109,7 @@ export const programmerDefaultCVData: CVData = {
     {
       title: "Software Engineer Intern",
       organization: "Acme Technologies",
-      dates: "June 2023 — August 2023",
+      dates: "June 2023 - August 2023",
       description: [
         "Designed and implemented secure REST APIs for a high-throughput messaging platform.",
         "Refactored legacy query logic, reducing database search latency by 35%.",
@@ -119,7 +119,7 @@ export const programmerDefaultCVData: CVData = {
   ],
   projects: [
     {
-      title: "Presume — Resume Builder",
+      title: "Presume: Resume Builder",
       dates: "2026",
       description: [
         "A minimalistic LaTeX resume builder featuring a high-contrast B&W design system and a local Print-to-PDF engine.",
@@ -132,8 +132,8 @@ export const programmerDefaultCVData: CVData = {
     { category: "Frameworks & Tools", skills: ["Next.js", "React", "Node.js", "Docker", "Git", "LaTeX"] }
   ],
   achievements: [
-    "Dean's Honor List — University of Pennsylvania, 2023",
-    "Top 50 — National Collegiate Programming Contest, 2022"
+    "Dean's Honor List, University of Pennsylvania, 2023",
+    "Top 50, National Collegiate Programming Contest, 2022"
   ],
   technicalWriting: [],
   languages: ["English (Native)", "Spanish (Conversational)"],
@@ -178,11 +178,11 @@ export const classicDefaultCVData: CVData = {
     {
       degree: "B.Sc. in Public Health",
       institution: "Harvard University",
-      dates: "Sep 2021 — Present",
+      dates: "Sep 2021 - Present",
       gpa: "3.89 / 4.00"
     },
     {
-      degree: "High School Diploma — Science",
+      degree: "High School Diploma: Science",
       institution: "Boston Latin School",
       dates: "2021",
       gpa: "4.00 / 4.00"
@@ -199,7 +199,7 @@ export const classicDefaultCVData: CVData = {
       ]
     },
     {
-      title: "Active Member — Public Health Club",
+      title: "Active Member, Public Health Club",
       organization: "Harvard University",
       dates: "Ongoing",
       description: [
@@ -223,12 +223,12 @@ export const classicDefaultCVData: CVData = {
     { category: "Soft Skills", skills: ["Critical Thinking", "Communication", "Leadership", "Teamwork"] }
   ],
   achievements: [
-    "Dean's Award — Harvard University, Fall 2023",
-    "Public Health Champions Award — Fall 2024",
-    "1st Runners-Up — World Diabetes Day Quiz, 2025"
+    "Dean's Award, Harvard University, Fall 2023",
+    "Public Health Champions Award, Fall 2024",
+    "1st Runners-Up, World Diabetes Day Quiz, 2025"
   ],
   technicalWriting: [],
-  languages: ["English — Native", "French — Conversational"],
+  languages: ["English: Native", "French: Conversational"],
   interests: ["Teaching", "Reading", "Football"],
   problemSolving: "",
   references: [
@@ -266,7 +266,7 @@ export const classicDefaultCVData: CVData = {
 export const defaultCVData: CVData = programmerDefaultCVData;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BIODATA TYPES — Marriage Biodata
+// BIODATA TYPES: Marriage Biodata
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface BiodataEducationEntry {
@@ -386,7 +386,7 @@ export const defaultBiodataData: BiodataData = {
     {
       degree: 'B.Sc. (Engg.) in Software Engineering',
       institution: 'Your University Name',
-      dates: '2022 – 2026',
+      dates: '2022 - 2026',
       thesis: 'Your thesis or capstone project title here.',
     },
     {
@@ -403,7 +403,7 @@ export const defaultBiodataData: BiodataData = {
 
   aboutMe: 'I am a graduate with a strong interest in technology and building practical things. I enjoy learning through projects, writing, reading, exploring ideas, and travelling. I tend to be quiet and reflective, and generally prefer a simple and peaceful lifestyle, while also enjoying frequent outings and discovering new places. I value mutual respect, personal growth, thoughtful communication, and a warm family environment.',
 
-  careerExperience: 'Your Job Title\nYour Company Name, City\nMonth Year – Month Year',
+  careerExperience: 'Your Job Title\nYour Company Name, City\nMonth Year - Month Year',
   careerCurrentStatus: 'Recent graduate; currently exploring opportunities in software engineering, AI/ML, and intelligent systems.',
 
   fatherDetails: "Father's Full Name\nOccupation and Organization",

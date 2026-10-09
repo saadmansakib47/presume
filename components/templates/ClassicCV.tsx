@@ -31,7 +31,7 @@ export default function ClassicCV({ cvData }: Props) {
   const tagBorder = themeColor === 'blue' ? '#bfdbfe' : '#d4d4d8';
 
   return (
-    <div className="print-page w-full min-h-[297mm] bg-white text-zinc-800 p-0 shadow-lg border border-zinc-200 flex flex-col font-sans text-xs relative overflow-hidden" id="cv-preview-classic">
+    <div className="print-page w-full pb-16 print:min-h-[297mm] print:pb-0 bg-white text-zinc-800 p-0 shadow-lg border border-zinc-200 flex flex-col font-sans text-xs relative overflow-hidden" id="cv-preview-classic">
       {/* Top Banner Header */}
       <div className="text-white py-6 px-8 flex items-center min-h-[96px] justify-between z-10" style={{ backgroundColor: bannerBg }}>
         <div className="flex-1">
@@ -125,7 +125,7 @@ export default function ClassicCV({ cvData }: Props) {
               <h3 className="text-[10px] font-bold text-zinc-900 uppercase tracking-wider border-b border-zinc-200 pb-1">Languages</h3>
               <div className="flex flex-col gap-1 text-zinc-600">
                 {languages.map((lang, idx) => {
-                  const parts = lang.split(/[—\-]/);
+                  const parts = lang.split(/[:—\-]/);
                   return (
                     <div key={idx} className="flex justify-between">
                       <span className="font-semibold text-zinc-800">{parts[0]?.trim()}</span>

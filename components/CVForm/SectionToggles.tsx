@@ -54,7 +54,7 @@ export default function SectionToggles({ cvData, setCvData }: Props) {
           );
         })}
 
-        {/* Photo toggle — Classic only */}
+        {/* Photo toggle: Classic only */}
         {cvData.template === 'classic' && (
           <label className="flex items-center justify-between bg-zinc-50 border border-zinc-200 p-3 rounded-[10px] cursor-pointer hover:bg-zinc-100 transition select-none">
             <span className="text-xs font-semibold text-zinc-700">Profile Photo</span>
