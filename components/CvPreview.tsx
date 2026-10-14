@@ -15,7 +15,7 @@ interface Props {
   latexOutput: string;
   customLatex: string | null;
   setCustomLatex: (val: string | null) => void;
-  templateType?: 'programmer' | 'classic' | 'biodata';
+  templateType?: string;
   biodataData?: BiodataData;
 }
 

@@ -17,6 +17,8 @@ import ProgrammerCV from '@/components/templates/ProgrammerCV';
 import MarriageBiodataCV from '@/components/templates/MarriageBiodataCV';
 import { generateLatex } from '@/lib/latex-template';
 import { generateBiodataLatex } from '@/lib/biodata-latex';
+import { generateHuntedLatex } from '@/lib/hunted-latex';
+import { CatalogTemplate } from '@/lib/template-hunter';
 import ContributeModal from '@/components/ContributeModal';
 import TemplateBrowserModal from '@/components/TemplateBrowserModal';
 import AIChatbot from '@/components/AIChatbot';
@@ -29,6 +31,7 @@ import {
   PencilLine,
   Globe,
   Home,
+  Compass,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -129,13 +132,21 @@ function useLIFOTypewriter(speed = 50, pauseMs = 1400, deleteSpeed = 30) {
 
 // ─── Template Selection Modal ─────────────────────────────────────────────────
 function TemplateModal({
+  catalog,
   onSelect,
   onClose,
   onBrowse,
+  onHunt,
+  isHunting,
+  huntMessage,
 }: {
-  onSelect: (type: 'programmer' | 'classic' | 'biodata') => void;
+  catalog: CatalogTemplate[];
+  onSelect: (type: string) => void;
   onClose: () => void;
   onBrowse: () => void;
+  onHunt: () => void;
+  isHunting: boolean;
+  huntMessage: string | null;
 }) {
   // Close on Escape
   useEffect(() => {
@@ -145,6 +156,8 @@ function TemplateModal({
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [onClose]);
+
+  const huntedTemplates = catalog.filter((t) => !t.isBuiltin);
 
   return (
     <div
@@ -165,12 +178,23 @@ function TemplateModal({
         </button>
 
         <div className="space-y-1 mb-5">
-          <h2 className="text-lg sm:text-xl font-black tracking-tight text-zinc-950 uppercase">
-            Choose a Template
-          </h2>
+          <div className="flex items-center justify-between pr-8">
+            <h2 className="text-lg sm:text-xl font-black tracking-tight text-zinc-950 uppercase">
+              Choose a Template
+            </h2>
+            <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-2 py-0.5 rounded-full bg-zinc-100 border border-zinc-200">
+              {catalog.length} Available
+            </span>
+          </div>
           <p className="text-sm text-zinc-500 font-medium">
-            Pick your format: professional resume or matrimonial biodata.
+            Pick your format: professional resume, matrimonial biodata, or discovered layouts.
           </p>
+          {huntMessage && (
+            <div className="mt-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-zinc-800 animate-fade-in flex items-center gap-2">
+              <Compass size={14} className="text-zinc-600" />
+              <span>{huntMessage}</span>
+            </div>
+          )}
         </div>
 
         <div className="overflow-y-auto pr-1">
@@ -250,23 +274,102 @@ function TemplateModal({
               </div>
             </button>
 
-            {/* Coming Soon Card (Row 2, Col 2 - below classic) */}
-            <div className="text-left bg-zinc-50 border border-dashed border-zinc-200 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 opacity-75 select-none">
-              <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100/70 border border-dashed border-zinc-200 flex flex-col items-center justify-center p-4 text-center">
-                <span className="text-[11px] font-extrabold text-zinc-400 uppercase tracking-widest">
-                  Coming Soon
-                </span>
-                <p className="text-[10px] text-zinc-400 mt-1">In Development</p>
+            {/* Hunted Templates (Dynamically added from GitHub) */}
+            {huntedTemplates.map((tmpl) => (
+              <button
+                key={tmpl.id}
+                onClick={() => onSelect(tmpl.id)}
+                className="group text-left bg-white border border-zinc-200 hover:border-zinc-900 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+              >
+                <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200 flex items-center justify-center">
+                  {tmpl.thumbnail ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={tmpl.thumbnail}
+                      alt={tmpl.name}
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full p-4 flex flex-col justify-between bg-zinc-50/90 text-left">
+                      <div className="space-y-1.5">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 block">
+                          Engine: {tmpl.engine}
+                        </span>
+                        <div className="w-16 h-1.5 bg-zinc-300 rounded-full" />
+                        <div className="space-y-1 pt-2">
+                          <div className="w-full h-1.5 bg-zinc-200 rounded" />
+                          <div className="w-5/6 h-1.5 bg-zinc-200 rounded" />
+                          <div className="w-2/3 h-1.5 bg-zinc-200 rounded" />
+                        </div>
+                      </div>
+                      <div className="space-y-1 border-t border-zinc-200 pt-2">
+                        <div className="w-full h-1 bg-zinc-200 rounded" />
+                        <div className="w-3/4 h-1 bg-zinc-200 rounded" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <div className="flex items-center justify-between gap-1">
+                    <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide truncate">
+                      {tmpl.name}
+                    </h3>
+                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 font-bold uppercase shrink-0">
+                      Hunted
+                    </span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5 truncate">
+                    By {tmpl.author || 'Open Source'}
+                  </p>
+                </div>
+              </button>
+            ))}
+
+            {/* Active Hunt Template Card */}
+            <button
+              onClick={onHunt}
+              disabled={isHunting}
+              className="text-left bg-zinc-50 hover:bg-zinc-100 border border-dashed border-zinc-300 hover:border-zinc-950 rounded-xl p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 transition-all duration-200 cursor-pointer shadow-sm group disabled:cursor-wait"
+            >
+              <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-zinc-100/80 border border-dashed border-zinc-200 flex flex-col items-center justify-center p-4 text-center">
+                {isHunting ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Compass size={28} className="text-zinc-900 animate-spin" />
+                    <span className="text-[10px] font-black text-zinc-800 uppercase tracking-wider">
+                      Hunting GitHub...
+                    </span>
+                    <span className="text-[9px] text-zinc-500 font-medium max-w-[120px] leading-tight">
+                      Inspecting TeX & license
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-white border border-zinc-200 flex items-center justify-center shadow-xs group-hover:scale-105 transition">
+                      <Compass size={20} className="text-zinc-800 group-hover:rotate-45 transition duration-300" />
+                    </div>
+                    <span className="text-[11px] font-black text-zinc-800 uppercase tracking-wider">
+                      Hunt GitHub
+                    </span>
+                    <span className="text-[9px] text-zinc-400 font-medium">
+                      Self Expanding Engine
+                    </span>
+                  </div>
+                )}
               </div>
               <div>
-                <h3 className="font-extrabold text-xs sm:text-sm text-zinc-400 uppercase tracking-wide">
-                  More Templates
-                </h3>
+                <div className="flex items-center justify-between gap-1">
+                  <h3 className="font-extrabold text-xs sm:text-sm text-zinc-900 uppercase tracking-wide">
+                    Hunt Template
+                  </h3>
+                  <span className="text-[8px] px-1.5 py-0.5 rounded bg-zinc-200 text-zinc-800 font-bold uppercase shrink-0">
+                    Auto Ingest
+                  </span>
+                </div>
                 <p className="text-[10px] sm:text-[11px] text-zinc-400 font-semibold mt-0.5">
-                  More coming soon...
+                  {isHunting ? 'Analyzing repository...' : 'Click to discover next'}
                 </p>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
@@ -331,14 +434,97 @@ export default function PresumePage() {
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState<'landing' | 'builder'>('landing');
   const [showModal, setShowModal] = useState(false);
-  const [activeTemplate, setActiveTemplate] = useState<'programmer' | 'classic' | 'biodata'>('programmer');
+  const [activeTemplate, setActiveTemplate] = useState<string>('programmer');
   const [cvData, setCvData] = useState<CVData>(programmerDefaultCVData);
   const [biodataData, setBiodataData] = useState<BiodataData>(defaultBiodataData);
   // Mobile builder tab
   const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form');
 
+  const [catalog, setCatalog] = useState<CatalogTemplate[]>([
+    {
+      id: 'programmer',
+      name: 'Programmer',
+      description: 'Single-column minimalist resume tailored for software engineers and tech professionals.',
+      category: 'programmer',
+      engine: 'pdflatex',
+      license: 'MIT',
+      isBuiltin: true,
+      thumbnail: '/templates/programmer.png',
+      createdAt: '2026-10-09T00:00:00.000Z',
+    },
+    {
+      id: 'classic',
+      name: 'Classic',
+      description: 'Two-column editorial CV with sidebar metrics, photo support, and high typography contrast.',
+      category: 'classic',
+      engine: 'pdflatex',
+      license: 'MIT',
+      isBuiltin: true,
+      thumbnail: '/templates/classic.png',
+      createdAt: '2026-10-09T00:00:00.000Z',
+    },
+    {
+      id: 'biodata',
+      name: 'Marriage Resume',
+      description: 'Two-column traditional matrimonial biodata with photo silhouette, religious background, family, and partner preferences.',
+      category: 'biodata',
+      engine: 'xelatex',
+      license: 'MIT',
+      isBuiltin: true,
+      thumbnail: '/templates/marriage.png',
+      texFile: 'marrieage-biodata.tex',
+      createdAt: '2026-10-09T00:00:00.000Z',
+    },
+  ]);
+
+  const [isHunting, setIsHunting] = useState(false);
+  const [huntMessage, setHuntMessage] = useState<string | null>(null);
+
+  // Load template catalog on mount
+  useEffect(() => {
+    fetch('/api/hunt')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.catalog)) {
+          setCatalog(data.catalog);
+        }
+      })
+      .catch((err) => console.error('Failed to load template catalog:', err));
+  }, []);
+
+  const handleHuntTemplate = async () => {
+    setIsHunting(true);
+    setHuntMessage('Searching GitHub for open-source LaTeX templates...');
+    try {
+      const res = await fetch('/api/hunt', { method: 'POST' });
+      const data = await res.json();
+      if (data.success && data.template) {
+        setCatalog((prev) => {
+          const filtered = prev.filter((t) => t.id !== data.template.id);
+          return [...filtered, data.template];
+        });
+        setHuntMessage(data.message || `Added ${data.template.name}!`);
+      } else {
+        setHuntMessage(data.message || 'No new templates found in current pool.');
+      }
+    } catch (err: unknown) {
+      console.error('Hunt failed:', err);
+      setHuntMessage('Template hunt request failed. Please check network connection.');
+    } finally {
+      setIsHunting(false);
+    }
+  };
+
   const typedMotto = useLIFOTypewriter(50, 1400, 28);
-  const latexOutput = activeTemplate === 'biodata' ? generateBiodataLatex(biodataData) : generateLatex(cvData);
+  const activeHuntedTemplate = catalog.find((t) => t.id === activeTemplate && !t.isBuiltin);
+
+  const latexOutput =
+    activeTemplate === 'biodata'
+      ? generateBiodataLatex(biodataData)
+      : activeHuntedTemplate
+      ? generateHuntedLatex(activeHuntedTemplate, cvData)
+      : generateLatex(cvData);
+
   const [customLatex, setCustomLatex] = useState<string | null>(null);
   const [showContribute, setShowContribute] = useState(false);
   const [showBrowser, setShowBrowser] = useState(false);
@@ -366,7 +552,7 @@ export default function PresumePage() {
     }
   };
 
-  const startBuilding = (type: 'programmer' | 'classic' | 'biodata') => {
+  const startBuilding = (type: string) => {
     setActiveTemplate(type);
     if (type === 'programmer' || type === 'classic') {
       setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
@@ -383,12 +569,12 @@ export default function PresumePage() {
     setCustomLatex(null);
   };
 
-  const handleTemplateSwitch = (type: 'programmer' | 'classic' | 'biodata') => {
+  const handleTemplateSwitch = (type: string) => {
     setCustomLatex(null);
     setActiveTemplate(type);
     if (type === 'programmer' || type === 'classic') {
       const basePreset = type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData;
-      setCvData(prev => ({
+      setCvData((prev) => ({
         ...basePreset,
         themeColor: prev.themeColor,
         personalInfo: {
@@ -400,21 +586,21 @@ export default function PresumePage() {
           linkedin: prev.personalInfo.linkedin || basePreset.personalInfo.linkedin,
           github: prev.personalInfo.github || basePreset.personalInfo.github,
           location: prev.personalInfo.location || basePreset.personalInfo.location,
-        }
+        },
       }));
     }
   };
 
   const downloadTeX = () => {
     const isBio = activeTemplate === 'biodata';
-    const activeTex = customLatex !== null ? customLatex : (isBio ? generateBiodataLatex(biodataData) : generateLatex(cvData));
+    const activeTex = customLatex !== null ? customLatex : latexOutput;
     const blob = new Blob([activeTex], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     const filename = isBio
       ? `${(biodataData.personalInfo.fullName || 'Marriage').replace(/\s+/g, '_')}_Biodata.tex`
-      : `${cvData.personalInfo.firstName || 'My'}_${cvData.personalInfo.lastName || 'Resume'}.tex`;
+      : `${cvData.personalInfo.firstName || 'My'}_${cvData.personalInfo.lastName || (activeHuntedTemplate ? activeHuntedTemplate.name.replace(/\s+/g, '_') : 'Resume')}.tex`;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
@@ -432,9 +618,13 @@ export default function PresumePage() {
       {/* Template selection modal */}
       {showModal && (
         <TemplateModal
+          catalog={catalog}
           onSelect={startBuilding}
           onClose={() => setShowModal(false)}
           onBrowse={() => setShowBrowser(true)}
+          onHunt={handleHuntTemplate}
+          isHunting={isHunting}
+          huntMessage={huntMessage}
         />
       )}
 
@@ -479,14 +669,14 @@ export default function PresumePage() {
             {step === 'builder' && (
               <div className="flex items-center gap-1.5 sm:gap-2.5">
                 {/* Template switcher or Home button */}
-                {activeTemplate === 'biodata' ? (
+                {activeTemplate === 'biodata' || activeHuntedTemplate ? (
                   <button
                     onClick={() => setShowModal(true)}
                     className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold transition border border-zinc-200 shadow-sm cursor-pointer"
                     title="Choose a Template"
                   >
                     <Home size={14} />
-                    <span>Home</span>
+                    <span>{activeHuntedTemplate ? activeHuntedTemplate.name : 'Templates'}</span>
                   </button>
                 ) : (
                   <div className="hidden sm:flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
@@ -578,62 +768,63 @@ export default function PresumePage() {
                 No signup, no surveys, no bloat. Fast, simple, and clean.
               </p>
 
-              {/* Single CTA */}
-              <button
-                id="build-resume-btn"
-                onClick={() => setShowModal(true)}
-                className="px-7 sm:px-8 py-3 sm:py-3.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-[12px] text-sm font-extrabold transition shadow-lg cursor-pointer"
-              >
-                Build Resume →
-              </button>
+              {/* Action buttons */}
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  id="build-resume-btn"
+                  onClick={() => setShowModal(true)}
+                  className="px-7 sm:px-8 py-3 sm:py-3.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-[12px] text-sm font-extrabold transition shadow-lg cursor-pointer"
+                >
+                  Build Resume →
+                </button>
+                <button
+                  onClick={handleHuntTemplate}
+                  disabled={isHunting}
+                  className="px-6 py-3 sm:py-3.5 bg-white hover:bg-zinc-100 text-zinc-900 border border-zinc-200 rounded-[12px] text-sm font-extrabold transition shadow-sm flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  title="Search GitHub for new open-source LaTeX templates"
+                >
+                  <Compass size={16} className={isHunting ? 'animate-spin' : ''} />
+                  <span>{isHunting ? 'Hunting...' : 'Hunt Templates'}</span>
+                </button>
+              </div>
 
-              {/* Subtle template preview strip */}
-              <div className="grid grid-cols-3 gap-2.5 sm:gap-4 mt-2 sm:mt-4 max-w-[340px] sm:max-w-md w-full opacity-75 hover:opacity-100 transition-opacity">
-                <button
-                  onClick={() => startBuilding('programmer')}
-                  className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
-                >
-                  <Image
-                    src="/templates/programmer.png"
-                    alt="Programmer Template Preview"
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition duration-300"
-                    sizes="150px"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider">
-                    Programmer
-                  </div>
-                </button>
-                <button
-                  onClick={() => startBuilding('classic')}
-                  className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
-                >
-                  <Image
-                    src="/templates/classic.png"
-                    alt="Classic Template Preview"
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition duration-300"
-                    sizes="150px"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider">
-                    Classic
-                  </div>
-                </button>
-                <button
-                  onClick={() => startBuilding('biodata')}
-                  className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group"
-                >
-                  <Image
-                    src="/templates/marriage.png"
-                    alt="Marriage Biodata Preview"
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition duration-300"
-                    sizes="150px"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider">
-                    Marriage
-                  </div>
-                </button>
+              {huntMessage && (
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-xs font-semibold text-zinc-800 animate-fade-in">
+                  <Compass size={14} className="text-zinc-600" />
+                  <span>{huntMessage}</span>
+                </div>
+              )}
+
+              {/* Template preview strip */}
+              <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4 mt-2 sm:mt-4 max-w-lg w-full opacity-75 hover:opacity-100 transition-opacity">
+                {catalog.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => startBuilding(t.id)}
+                    className="relative aspect-[3/4] w-[90px] sm:w-[105px] rounded-xl overflow-hidden border border-zinc-200 shadow-sm cursor-pointer group bg-zinc-50"
+                  >
+                    {t.thumbnail ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.thumbnail}
+                        alt={t.name}
+                        className="w-full h-full object-cover group-hover:scale-[1.03] transition duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full p-2.5 flex flex-col justify-between bg-zinc-50">
+                        <div className="space-y-1">
+                          <span className="text-[7px] font-black uppercase text-zinc-400 block">{t.engine}</span>
+                          <div className="w-8 h-1 bg-zinc-300 rounded" />
+                          <div className="w-full h-1 bg-zinc-200 rounded" />
+                          <div className="w-3/4 h-1 bg-zinc-200 rounded" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute bottom-0 inset-x-0 bg-white/90 py-1 text-[8px] sm:text-[9px] font-bold text-zinc-600 text-center uppercase tracking-wider truncate px-1">
+                      {t.name}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -650,12 +841,12 @@ export default function PresumePage() {
                 </button>
 
                 {/* Mobile template switcher or Home button */}
-                {activeTemplate === 'biodata' ? (
+                {activeTemplate === 'biodata' || activeHuntedTemplate ? (
                   <button
                     onClick={() => setShowModal(true)}
                     className="lg:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] text-[10px] font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 transition cursor-pointer"
                   >
-                    <Home size={12} /> Home
+                    <Home size={12} /> Templates
                   </button>
                 ) : (
                   <div className="lg:hidden flex bg-zinc-100 p-0.5 rounded-[8px] border border-zinc-200">
