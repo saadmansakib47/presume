@@ -1,34 +1,50 @@
-// app/api/hunt/route.ts
-import { NextResponse } from 'next/server';
+﻿// app/api/hunt/route.ts
+import { NextRequest, NextResponse } from 'next/server';
 import { getTemplateCatalog, huntNextTemplate } from '@/lib/template-hunter';
 
 export const dynamic = 'force-dynamic';
 
+/** GET /api/hunt — public: returns catalog metadata (no secrets, no .tex content) */
 export async function GET() {
   try {
     const catalog = await getTemplateCatalog();
-    const huntedCount = catalog.filter((t) => !t.isBuiltin).length;
-    return NextResponse.json({
-      success: true,
-      catalog,
-      huntedCount,
-    });
+    // Strip full texTemplate content from catalog listing — only metadata
+    const safeCatalog = catalog.map(({ texTemplate: _tex, ...rest }) => rest);
+    const huntedCount = safeCatalog.filter((t) => !t.isBuiltin).length;
+    return NextResponse.json({ success: true, catalog: safeCatalog, huntedCount });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to retrieve catalog';
     return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
 
-export async function POST() {
+/** POST /api/hunt — protected: requires Authorization: Bearer <HUNT_SECRET> */
+export async function POST(req: NextRequest) {
+  const secret = process.env.HUNT_SECRET;
+
+  // If no secret is configured, deny all requests
+  if (!secret) {
+    return NextResponse.json(
+      { success: false, error: 'Hunt endpoint is not configured on this server.' },
+      { status: 503 }
+    );
+  }
+
+  const authHeader = req.headers.get('authorization') ?? '';
+  const provided = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+
+  if (provided !== secret) {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized.' },
+      { status: 401 }
+    );
+  }
+
   try {
     const result = await huntNextTemplate();
     if (!result.success) {
-      return NextResponse.json(
-        { success: false, message: result.message },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: result.message }, { status: 400 });
     }
-
     return NextResponse.json({
       success: true,
       template: result.template,
@@ -36,7 +52,8 @@ export async function POST() {
     });
   } catch (error: unknown) {
     console.error('Template hunt error:', error);
-    const message = error instanceof Error ? error.message : 'Template hunt pipeline encountered an error';
+    const message =
+      error instanceof Error ? error.message : 'Template hunt pipeline encountered an error';
     return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
