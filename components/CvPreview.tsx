@@ -1,4 +1,4 @@
-// components/CvPreview.tsx
+﻿// components/CvPreview.tsx
 'use client';
 
 import { useState } from 'react';
@@ -6,6 +6,8 @@ import { CVData } from '@/lib/cv-types';
 import ClassicCV from './templates/ClassicCV';
 import ProgrammerCV from './templates/ProgrammerCV';
 import MarriageBiodataCV from './templates/MarriageBiodataCV';
+import DynamicHuntedCV from './templates/DynamicHuntedCV';
+import { CatalogTemplate } from '@/lib/template-hunter';
 import { Eye, Code, Copy, Check, ExternalLink, RotateCcw } from 'lucide-react';
 import { BiodataData } from '@/lib/cv-types';
 
@@ -17,6 +19,7 @@ interface Props {
   setCustomLatex: (val: string | null) => void;
   templateType?: string;
   biodataData?: BiodataData;
+  catalogTemplate?: CatalogTemplate;
 }
 
 export default function CvPreview({
@@ -27,23 +30,29 @@ export default function CvPreview({
   setCustomLatex,
   templateType = 'programmer',
   biodataData,
+  catalogTemplate,
 }: Props) {
   const [viewMode, setViewMode] = useState<'visual' | 'latex'>('visual');
   const [copied, setCopied] = useState(false);
 
   const activeLatex = customLatex !== null ? customLatex : latexOutput;
   const isLatexEdited = customLatex !== null;
-  const lineCount = activeLatex ? activeLatex.split('\n').length : 0;
-  const byteSize = activeLatex ? (new Blob([activeLatex]).size / 1024).toFixed(1) : '0';
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(activeLatex);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const lineCount = activeLatex.split('\n').length;
+  const byteSize = (new Blob([activeLatex]).size / 1024).toFixed(1);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(activeLatex);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy LaTeX code:', err);
+    }
   };
 
   const setTheme = (color: 'black' | 'blue') => {
-    setCvData(prev => ({ ...prev, themeColor: color }));
+    setCvData((prev) => ({ ...prev, themeColor: color }));
   };
 
   const handleOpenInOverleaf = () => {
@@ -63,9 +72,10 @@ export default function CvPreview({
     document.body.removeChild(form);
   };
 
+  const isHunted = catalogTemplate && !catalogTemplate.isBuiltin;
+
   return (
     <div className="bg-white rounded-[10px] border border-zinc-200 flex flex-col overflow-hidden shadow-sm">
-
       {/* Toolbar row 1: view mode + copy */}
       <div className="flex flex-wrap justify-between items-center gap-2 bg-zinc-50 px-3 sm:px-4 py-2.5 border-b border-zinc-200 no-print">
         {/* View mode toggle */}
@@ -73,19 +83,21 @@ export default function CvPreview({
           <div className="flex bg-zinc-200 p-0.5 rounded-[8px]">
             <button
               onClick={() => setViewMode('visual')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${viewMode === 'visual'
+              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'visual'
                   ? 'bg-white text-zinc-900 shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
-                }`}
+              }`}
             >
               <Eye size={13} /> Visual
             </button>
             <button
               onClick={() => setViewMode('latex')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${viewMode === 'latex'
+              className={`px-2.5 sm:px-3 py-1.5 rounded-[6px] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'latex'
                   ? 'bg-white text-zinc-900 shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
-                }`}
+              }`}
             >
               <Code size={13} /> LaTeX
             </button>
@@ -99,7 +111,7 @@ export default function CvPreview({
 
           {viewMode === 'latex' && (
             <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-[6px] bg-zinc-100 border border-zinc-200 text-zinc-600 text-[11px] font-medium">
-              {lineCount} lines · {byteSize} KB
+              {lineCount} lines &middot; {byteSize} KB
             </span>
           )}
         </div>
@@ -125,9 +137,13 @@ export default function CvPreview({
               className="flex items-center gap-1.5 bg-zinc-950 hover:bg-zinc-800 text-white px-3 py-1.5 rounded-[8px] text-xs font-bold transition shadow-sm cursor-pointer"
             >
               {copied ? (
-                <><Check size={13} className="text-green-400" /> Copied</>
+                <>
+                  <Check size={13} className="text-green-400" /> Copied
+                </>
               ) : (
-                <><Copy size={13} /> Copy</>
+                <>
+                  <Copy size={13} /> Copy
+                </>
               )}
             </button>
 
@@ -151,8 +167,25 @@ export default function CvPreview({
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-zinc-50 border border-zinc-200 text-xs font-semibold text-zinc-800">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#3F5F49] inline-block" />
                 <span className="text-[11px] font-bold text-[#3F5F49]">Forest Green Accent</span>
-                <span className="text-[10px] text-zinc-400 ml-1">· Warm Ivory Page (#FCFBF8)</span>
+                <span className="text-[10px] text-zinc-400 ml-1">&middot; Warm Ivory Page (#FCFBF8)</span>
               </div>
+            </div>
+          ) : isHunted ? (
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Template:</span>
+                <span className="text-xs font-extrabold text-zinc-900">{catalogTemplate.name}</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-zinc-100 border border-zinc-200 text-[10px] font-bold text-zinc-700">
+                <span
+                  className="w-2 h-2 rounded-full inline-block"
+                  style={{ backgroundColor: catalogTemplate.layoutStyle?.accentColor || '#1e3a8a' }}
+                />
+                <span className="uppercase">{catalogTemplate.layoutStyle?.layout || 'single-column'}</span>
+              </div>
+              <span className="text-[10px] text-zinc-400 font-medium hidden sm:inline">
+                Engine: {catalogTemplate.engine} &middot; Author: {catalogTemplate.author || 'Open Source'}
+              </span>
             </div>
           ) : (
             <>
@@ -160,20 +193,22 @@ export default function CvPreview({
               <div className="flex bg-zinc-100 p-0.5 rounded-[7px] border border-zinc-200">
                 <button
                   onClick={() => setTheme('black')}
-                  className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'black'
+                  className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                    cvData.themeColor === 'black'
                       ? 'bg-zinc-950 text-white shadow-sm'
                       : 'text-zinc-500 hover:text-zinc-800'
-                    }`}
+                  }`}
                 >
                   <span className="w-2 h-2 rounded-full bg-zinc-950 inline-block border border-zinc-700" />
                   Black
                 </button>
                 <button
                   onClick={() => setTheme('blue')}
-                  className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${cvData.themeColor === 'blue'
+                  className={`px-2.5 py-1 rounded-[5px] text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                    cvData.themeColor === 'blue'
                       ? 'bg-zinc-950 text-white shadow-sm'
                       : 'text-zinc-500 hover:text-zinc-800'
-                    }`}
+                  }`}
                 >
                   <span className="w-2 h-2 rounded-full bg-[#1A3A5C] inline-block border border-blue-900" />
                   Navy
@@ -195,7 +230,9 @@ export default function CvPreview({
             <div className="w-full max-w-[210mm] shadow-2xl rounded-[4px] overflow-hidden bg-white origin-top preview-cv">
               {templateType === 'biodata' && biodataData ? (
                 <MarriageBiodataCV data={biodataData} />
-              ) : cvData.template === 'classic' ? (
+              ) : isHunted ? (
+                <DynamicHuntedCV cvData={cvData} template={catalogTemplate} />
+              ) : templateType === 'classic' || cvData.template === 'classic' ? (
                 <ClassicCV cvData={cvData} />
               ) : (
                 <ProgrammerCV cvData={cvData} />

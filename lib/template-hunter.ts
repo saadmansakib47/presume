@@ -1,6 +1,16 @@
-// lib/template-hunter.ts
+import { extractSampleData, detectSections } from './latex-sample-extractor';
+﻿// lib/template-hunter.ts
 import fs from 'fs/promises';
 import path from 'path';
+
+export interface TemplateLayoutStyle {
+  layout: 'single-column' | 'two-column-sidebar' | 'banner-header' | 'minimal-modern';
+  accentColor: string;
+  fontFamily: 'sans' | 'serif';
+  headerAlignment: 'left' | 'center';
+  dividerStyle: 'solid-line' | 'shaded-box' | 'subtle-border';
+  showPhoto: boolean;
+}
 
 export interface CatalogTemplate {
   id: string;
@@ -15,6 +25,9 @@ export interface CatalogTemplate {
   thumbnail?: string;
   texFile?: string;
   texTemplate?: string;
+  layoutStyle?: TemplateLayoutStyle;
+  sampleData?: Record<string, unknown>;
+  detectedSections?: string[];
   createdAt: string;
 }
 
@@ -70,7 +83,7 @@ const CATALOG_PATH = path.join(process.cwd(), 'templates', 'catalog.json');
 export async function getTemplateCatalog(): Promise<CatalogTemplate[]> {
   try {
     const raw = await fs.readFile(CATALOG_PATH, 'utf-8');
-    return JSON.parse(raw);
+    return JSON.parse(raw.replace(/^\uFEFF/, ''));
   } catch (err) {
     console.error('Failed to read template catalog:', err);
     return [];
@@ -88,13 +101,241 @@ export async function saveTemplateCatalog(catalog: CatalogTemplate[]): Promise<v
  * Sanitize LaTeX source code to prevent unsafe macros
  */
 export function sanitizeLatexSource(rawTex: string): string {
-  // Strip dangerous macro definitions and external shell execution
   return rawTex
     .replace(/\\write18\b/g, '% [BLOCKED write18]')
     .replace(/\\immediate\\write18\b/g, '% [BLOCKED immediate write18]')
     .replace(/\\openout\b/g, '% [BLOCKED openout]')
     .replace(/\\catcode\b/g, '% [BLOCKED catcode]')
     .replace(/\r\n/g, '\n');
+}
+
+/**
+ * Analyze raw LaTeX source to extract layout, colors, typography and structural style
+ */
+export function analyzeLatexStyle(rawTex: string): TemplateLayoutStyle {
+  const lower = rawTex.toLowerCase();
+
+  // Layout detection
+  let layout: TemplateLayoutStyle['layout'] = 'single-column';
+  if (
+    lower.includes('multicols') ||
+    lower.includes('paracol') ||
+    lower.includes('sidebar') ||
+    lower.includes('minipage}{0.3') ||
+    lower.includes('minipage}{0.25') ||
+    lower.includes('minipage}{0.33')
+  ) {
+    layout = 'two-column-sidebar';
+  } else if (lower.includes('colorbox') && (lower.includes('header') || lower.includes('banner') || lower.includes('huge'))) {
+    layout = 'banner-header';
+  } else if (lower.includes('classic') || lower.includes('moderncv')) {
+    layout = 'minimal-modern';
+  }
+
+  // Accent color detection
+  let accentColor = '#1e3a8a'; // default navy
+  const hexMatch = rawTex.match(/\\definecolor\{[^}]*\}\{HTML\}\{([A-Fa-f0-9]{6})\}/i);
+  if (hexMatch) {
+    accentColor = `#${hexMatch[1]}`;
+  } else {
+    const rgbMatch = rawTex.match(/\\definecolor\{[^}]*\}\{RGB\}\{(\d+),\s*(\d+),\s*(\d+)\}/i);
+    if (rgbMatch) {
+      const r = parseInt(rgbMatch[1], 10).toString(16).padStart(2, '0');
+      const g = parseInt(rgbMatch[2], 10).toString(16).padStart(2, '0');
+      const b = parseInt(rgbMatch[3], 10).toString(16).padStart(2, '0');
+      accentColor = `#${r}${g}${b}`;
+    } else if (lower.includes('darkgray') || lower.includes('black')) {
+      accentColor = '#18181b';
+    } else if (lower.includes('teal')) {
+      accentColor = '#0f766e';
+    } else if (lower.includes('maroon') || lower.includes('burgundy')) {
+      accentColor = '#881337';
+    }
+  }
+
+  // Font family detection
+  let fontFamily: 'sans' | 'serif' = 'sans';
+  if (
+    lower.includes('mathptmx') ||
+    lower.includes('times') ||
+    lower.includes('charter') ||
+    lower.includes('palatino') ||
+    lower.includes('lmodern')
+  ) {
+    fontFamily = 'serif';
+  }
+
+  // Header alignment
+  let headerAlignment: 'left' | 'center' = 'center';
+  const headerSlice = rawTex.slice(0, 1500).toLowerCase();
+  if (headerSlice.includes('\\raggedright') || headerSlice.includes('\\flushleft')) {
+    headerAlignment = 'left';
+  } else if (headerSlice.includes('\\centering') || headerSlice.includes('\\begin{center}')) {
+    headerAlignment = 'center';
+  }
+
+  // Divider style
+  let dividerStyle: TemplateLayoutStyle['dividerStyle'] = 'solid-line';
+  if (lower.includes('\\colorbox') || lower.includes('\\fcolorbox')) {
+    dividerStyle = 'shaded-box';
+  } else if (!lower.includes('\\titlerule') && !lower.includes('\\hrule') && !lower.includes('\\rule{')) {
+    dividerStyle = 'subtle-border';
+  }
+
+  return {
+    layout,
+    accentColor,
+    fontFamily,
+    headerAlignment,
+    dividerStyle,
+    showPhoto: lower.includes('\\photo') || lower.includes('\\includegraphics'),
+  };
+}
+
+/**
+ * Generate a standalone React Component TSX file for a hunted template
+ */
+export function generateReactTemplateComponent(
+  templateId: string,
+  templateName: string,
+  style: TemplateLayoutStyle
+): string {
+  const isSerif = style.fontFamily === 'serif';
+  const accent = style.accentColor;
+  const isTwoCol = style.layout === 'two-column-sidebar';
+  const isBanner = style.layout === 'banner-header';
+  const isCentered = style.headerAlignment === 'center';
+
+  return `// components/templates/hunted/${templateId}.tsx
+// Auto-generated by Presume Template Hunter for "${templateName}"
+import React from 'react';
+import { CVData } from '@/lib/cv-types';
+import { Mail, Phone, MapPin, Globe } from 'lucide-react';
+
+interface Props {
+  cvData: CVData;
+}
+
+export default function HuntedTemplate_${templateId.replace(/[^a-zA-Z0-9]/g, '_')}({ cvData }: Props) {
+  const { personalInfo, summary, education, experience, projects, skills, achievements, languages, interests, enabledSections } = cvData;
+  const name = \`\${personalInfo.firstName || ''} \${personalInfo.lastName || ''}\`.trim() || 'Your Name';
+  const accentColor = '${accent}';
+
+  return (
+    <div className="print-page w-full pb-16 print:min-h-[297mm] print:pb-0 bg-white text-zinc-900 p-8 shadow-lg border border-zinc-200 flex flex-col ${isSerif ? 'font-serif' : 'font-sans'} text-xs relative overflow-hidden" id="cv-hunted-${templateId}">
+      {/* Header */}
+      ${isBanner ? `
+      <div className="px-6 py-5 -mx-8 -mt-8 mb-6 text-white flex justify-between items-center" style={{ backgroundColor: accentColor }}>
+        <div>
+          <h1 className="text-2xl font-black uppercase tracking-tight text-white">{name}</h1>
+          {personalInfo.headline && <p className="text-xs text-zinc-200 mt-0.5">{personalInfo.headline}</p>}
+        </div>
+        <div className="text-[10px] text-right text-zinc-200 space-y-0.5">
+          {personalInfo.email && <p>{personalInfo.email}</p>}
+          {personalInfo.phone && <p>{personalInfo.phone}</p>}
+        </div>
+      </div>
+      ` : `
+      <div className="${isCentered ? 'text-center' : 'text-left'} border-b border-zinc-300 pb-4 mb-4">
+        <h1 className="text-3xl font-black uppercase tracking-tight" style={{ color: accentColor }}>{name}</h1>
+        {personalInfo.headline && (
+          <p className="text-xs font-semibold text-zinc-600 uppercase tracking-widest mt-1 mb-2">{personalInfo.headline}</p>
+        )}
+        <div className="flex flex-wrap items-center ${isCentered ? 'justify-center' : 'justify-start'} gap-x-4 gap-y-1 text-[10px] text-zinc-600 font-medium">
+          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={10} style={{ color: accentColor }} />{personalInfo.email}</span>}
+          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={10} style={{ color: accentColor }} />{personalInfo.phone}</span>}
+          {(personalInfo.location || personalInfo.address) && <span className="flex items-center gap-1"><MapPin size={10} style={{ color: accentColor }} />{personalInfo.location || personalInfo.address}</span>}
+          {personalInfo.portfolio && <span className="flex items-center gap-1"><Globe size={10} style={{ color: accentColor }} />{personalInfo.portfolio}</span>}
+        </div>
+      </div>
+      `}
+
+      {/* Sections */}
+      <div className="space-y-4 flex-1">
+        {enabledSections.summary && summary && (
+          <div>
+            <h2 className="text-[11px] font-extrabold uppercase tracking-widest border-b pb-0.5 mb-1.5" style={{ color: accentColor, borderColor: accentColor }}>Summary</h2>
+            <p className="text-[10.5px] text-zinc-700 leading-relaxed">{summary}</p>
+          </div>
+        )}
+
+        {enabledSections.experience && experience.length > 0 && (
+          <div>
+            <h2 className="text-[11px] font-extrabold uppercase tracking-widest border-b pb-0.5 mb-2" style={{ color: accentColor, borderColor: accentColor }}>Experience</h2>
+            <div className="space-y-2.5">
+              {experience.map((exp, idx) => (
+                <div key={idx} className="space-y-0.5">
+                  <div className="flex justify-between items-baseline font-bold text-[11px] text-zinc-900">
+                    <span>{exp.title} &middot; <span className="font-semibold text-zinc-600">{exp.organization}</span></span>
+                    <span className="text-[10px] text-zinc-500 font-medium">{exp.dates}</span>
+                  </div>
+                  {exp.description && exp.description.length > 0 && (
+                    <ul className="list-disc list-outside ml-3.5 space-y-0.5 text-[10px] text-zinc-700">
+                      {exp.description.map((b, bIdx) => <li key={bIdx}>{b}</li>)}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {enabledSections.education && education.length > 0 && (
+          <div>
+            <h2 className="text-[11px] font-extrabold uppercase tracking-widest border-b pb-0.5 mb-2" style={{ color: accentColor, borderColor: accentColor }}>Education</h2>
+            <div className="space-y-1.5">
+              {education.map((edu, idx) => (
+                <div key={idx} className="flex justify-between items-baseline text-[10.5px]">
+                  <div>
+                    <span className="font-bold text-zinc-900">{edu.degree}</span> &middot; <span className="text-zinc-600">{edu.institution}</span>
+                    {edu.gpa && <span className="text-zinc-500 text-[10px]"> (GPA: {edu.gpa})</span>}
+                  </div>
+                  <span className="text-[10px] text-zinc-500 font-medium">{edu.dates}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {enabledSections.projects && projects.length > 0 && (
+          <div>
+            <h2 className="text-[11px] font-extrabold uppercase tracking-widest border-b pb-0.5 mb-2" style={{ color: accentColor, borderColor: accentColor }}>Projects</h2>
+            <div className="space-y-2">
+              {projects.map((proj, idx) => (
+                <div key={idx} className="space-y-0.5">
+                  <div className="flex justify-between items-baseline text-[11px] font-bold text-zinc-900">
+                    <span>{proj.title}</span>
+                    <span className="text-[10px] text-zinc-500 font-medium">{proj.dates}</span>
+                  </div>
+                  {proj.description && proj.description.length > 0 && (
+                    <ul className="list-disc list-outside ml-3.5 space-y-0.5 text-[10px] text-zinc-700">
+                      {proj.description.map((b, bIdx) => <li key={bIdx}>{b}</li>)}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {enabledSections.skills && skills.length > 0 && (
+          <div>
+            <h2 className="text-[11px] font-extrabold uppercase tracking-widest border-b pb-0.5 mb-1.5" style={{ color: accentColor, borderColor: accentColor }}>Skills</h2>
+            <div className="space-y-1 text-[10px]">
+              {skills.map((cat, idx) => (
+                <div key={idx} className="flex items-baseline gap-2">
+                  <span className="font-bold text-zinc-800 shrink-0">{cat.category}:</span>
+                  <span className="text-zinc-700">{cat.skills.join(', ')}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+`;
 }
 
 interface GitHubRepoItem {
@@ -134,7 +375,8 @@ async function discoverCandidates(existingRepoNames: Set<string>): Promise<Candi
 
   // 1. Try querying GitHub Search API
   try {
-    const searchUrl = 'https://api.github.com/search/repositories?q=topic:latex-resume+license:mit&sort=stars&order=desc&per_page=20';
+    const searchUrl =
+      'https://api.github.com/search/repositories?q=topic:latex-resume+license:mit&sort=stars&order=desc&per_page=20';
     const res = await fetch(searchUrl, { headers });
 
     if (res.ok) {
@@ -233,7 +475,8 @@ Output ONLY the raw parameterized LaTeX code. Do not wrap in markdown quotes.`;
  * 1. Find candidate list
  * 2. Ingest raw .tex (iterate until valid template found)
  * 3. Parameterize & Sanitize
- * 4. Save to templates directory & catalog.json
+ * 4. Analyze layout & build dedicated React builder component
+ * 5. Save to templates directory & catalog.json
  */
 export async function huntNextTemplate(): Promise<{
   success: boolean;
@@ -338,13 +581,31 @@ export async function huntNextTemplate(): Promise<{
     const cleanTex = sanitizeLatexSource(texContent);
     const parameterizedTex = await templatizeLatex(cleanTex);
 
+    // Analyze layout & style
+    const layoutStyle = analyzeLatexStyle(cleanTex);
+    // Extract sample data from template's demo content
+    const sampleData = extractSampleData(cleanTex);
+    const detectedSections = detectSections(cleanTex);
+
     // Generate unique slug
     const templateId = candidate.repo.replace('/', '-').toLowerCase();
     const texFileName = `${templateId}.tex`;
-    const texFilePath = path.join(process.cwd(), 'templates', texFileName);
+    const templatesDir = path.join(process.cwd(), 'templates');
+    await fs.mkdir(templatesDir, { recursive: true });
+    const texFilePath = path.join(templatesDir, texFileName);
 
     // Write .tex file to templates folder
     await fs.writeFile(texFilePath, cleanTex, 'utf-8');
+
+    // Self-expansion step: Generate and write dedicated React builder component to disk!
+    try {
+      const huntedComponentsDir = path.join(process.cwd(), 'components', 'templates', 'hunted');
+      await fs.mkdir(huntedComponentsDir, { recursive: true });
+      const reactCode = generateReactTemplateComponent(templateId, candidate.name, layoutStyle);
+      await fs.writeFile(path.join(huntedComponentsDir, `${templateId}.tsx`), reactCode, 'utf-8');
+    } catch (genErr) {
+      console.warn('Failed to write hunted React component to disk:', genErr);
+    }
 
     // Create new catalog entry
     const newTemplate: CatalogTemplate = {
@@ -360,6 +621,9 @@ export async function huntNextTemplate(): Promise<{
       thumbnail: previewImageUrl || undefined,
       texFile: texFileName,
       texTemplate: parameterizedTex,
+      layoutStyle,
+      sampleData,
+      detectedSections,
       createdAt: new Date().toISOString(),
     };
 

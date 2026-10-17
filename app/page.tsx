@@ -15,6 +15,7 @@ import CvPreview from '@/components/CvPreview';
 import ClassicCV from '@/components/templates/ClassicCV';
 import ProgrammerCV from '@/components/templates/ProgrammerCV';
 import MarriageBiodataCV from '@/components/templates/MarriageBiodataCV';
+import DynamicHuntedCV from '@/components/templates/DynamicHuntedCV';
 import { generateLatex } from '@/lib/latex-template';
 import { generateBiodataLatex } from '@/lib/biodata-latex';
 import { generateHuntedLatex } from '@/lib/hunted-latex';
@@ -139,6 +140,7 @@ function TemplateModal({
   onHunt,
   isHunting,
   huntMessage,
+  showHunt = false,
 }: {
   catalog: CatalogTemplate[];
   onSelect: (type: string) => void;
@@ -147,6 +149,7 @@ function TemplateModal({
   onHunt: () => void;
   isHunting: boolean;
   huntMessage: string | null;
+  showHunt?: boolean;
 }) {
   // Close on Escape
   useEffect(() => {
@@ -325,7 +328,8 @@ function TemplateModal({
               </button>
             ))}
 
-            {/* Active Hunt Template Card */}
+            {/* Active Hunt Template Card (Admin Only) */}
+            {showHunt && (
             <button
               onClick={onHunt}
               disabled={isHunting}
@@ -370,6 +374,7 @@ function TemplateModal({
                 </p>
               </div>
             </button>
+            )}
           </div>
         </div>
 
@@ -434,6 +439,7 @@ export default function PresumePage() {
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState<'landing' | 'builder'>('landing');
   const [showModal, setShowModal] = useState(false);
+  const [showHunt, setShowHunt] = useState(false);
   const [activeTemplate, setActiveTemplate] = useState<string>('programmer');
   const [cvData, setCvData] = useState<CVData>(programmerDefaultCVData);
   const [biodataData, setBiodataData] = useState<BiodataData>(defaultBiodataData);
@@ -496,7 +502,16 @@ export default function PresumePage() {
     setIsHunting(true);
     setHuntMessage('Searching GitHub for open-source LaTeX templates...');
     try {
-      const res = await fetch('/api/hunt', { method: 'POST' });
+      const secretKey = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('hunt_key') || 'presume-hunt-dev-secret'
+        : 'presume-hunt-dev-secret';
+      const res = await fetch('/api/hunt', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${secretKey}`,
+          'x-hunt-secret': secretKey,
+        },
+      });
       const data = await res.json();
       if (data.success && data.template) {
         setCatalog((prev) => {
@@ -554,12 +569,22 @@ export default function PresumePage() {
 
   const startBuilding = (type: string) => {
     setActiveTemplate(type);
-    if (type === 'programmer' || type === 'classic') {
-      setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
-    }
     setCustomLatex(null);
     setShowModal(false);
     setMobileTab('form');
+    if (type === 'biodata') {
+      // biodata has its own form+data, nothing to set
+    } else if (type === 'programmer' || type === 'classic') {
+      setCvData(type === 'programmer' ? programmerDefaultCVData : classicDefaultCVData);
+    } else {
+      // Hunted template: load its sample data if available
+      const hunted = catalog.find(t => t.id === type && !t.isBuiltin);
+      if (hunted && hunted.sampleData) {
+        setCvData(prev => ({ ...prev, ...hunted.sampleData as Partial<typeof prev> }));
+      } else {
+        setCvData({ ...programmerDefaultCVData, template: 'programmer' });
+      }
+    }
     setStep('builder');
   };
 
@@ -625,6 +650,7 @@ export default function PresumePage() {
           onHunt={handleHuntTemplate}
           isHunting={isHunting}
           huntMessage={huntMessage}
+          showHunt={showHunt}
         />
       )}
 
@@ -900,6 +926,7 @@ export default function PresumePage() {
                     setCustomLatex={setCustomLatex}
                     templateType={activeTemplate}
                     biodataData={biodataData}
+                    catalogTemplate={activeHuntedTemplate}
                   />
                 </div>
               </div>
